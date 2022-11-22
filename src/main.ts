@@ -1,8 +1,11 @@
 import "./style.css";
+import "element-plus/dist/index.css";
 
 import { ApolloClient, InMemoryCache } from "@apollo/client/core";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import { createHead } from "@vueuse/head";
+import ElementPlus from "element-plus";
+import { createPinia } from "pinia";
 import { createApp, h, provide } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "~pages";
@@ -50,6 +53,11 @@ const app = createApp({
 });
 
 const head = createHead();
+const pinia = createPinia();
+
 app.use(head);
+app.use(ElementPlus);
 app.use(router);
+app.use(pinia);
+
 app.mount("#app");
