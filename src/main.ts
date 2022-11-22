@@ -14,7 +14,27 @@ const router = createRouter({
 	routes
 });
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+	typePolicies: {
+		Query: {
+			fields: {
+				pokemons: {
+					// Don't cache separate results based on
+					// any of this field's arguments.
+					keyArgs: false,
+					
+					// Concatenate the incoming list of edges with
+					// the existing list of edges.
+					merge(existing = {edges: []}, incoming) {
+						if (!incoming || !incoming.edges.length) return existing;
+						const edges = existing.edges.concat(incoming.edges);
+						return {...existing, ...incoming, edges};
+					},
+				}
+			}
+		}
+	}
+});
 
 const apolloClient = new ApolloClient({
 	uri: import.meta.env.VITE_POKEMON_GRAPHQL_API_URL,

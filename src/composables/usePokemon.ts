@@ -1,6 +1,6 @@
 import { useQuery } from "@vue/apollo-composable";
 import { pokemonNameQuery, pokemonsQuery, pokemonTypesQuery } from "~/graphql/queries";
-import { computed, Ref, ref } from "vue";
+import { computed, ComputedRef, Ref, ref } from "vue";
 import { Pokemon, PokemonFilterInput, PokemonQueryInput } from "~/types";
 
 export function usePokemonQuery() {
@@ -9,18 +9,30 @@ export function usePokemonQuery() {
 	const filter: Ref<PokemonFilterInput> = ref({});
 	const search: Ref<string> = ref("");
 
-	const { query, loading, error, result } = useQuery(pokemonsQuery, (): PokemonQueryInput => ({
+	const { query, loading, error, result, fetchMore } = useQuery(pokemonsQuery, (): PokemonQueryInput => ({
 		limit: limit.value,
 		offset: offset.value,
 		filter: filter.value,
 		search: search.value,
 	}));
 
-	const pokemons: Ref<Pokemon[]> = computed(() => {
-		return result.value?.pokemons.edges as Pokemon[] || [];
+	const pokemons: ComputedRef<Pokemon[]> = computed((): Pokemon[] => {
+		return result.value?.pokemons.edges || [];
 	});
-	
 
+	const loadMore = () => {
+		offset.value += limit.value;
+		fetchMore({
+			variables: {
+				limit: limit.value,
+				offset: offset.value,
+				filter: filter.value,
+				search: search.value,
+			},
+		});
+	};
+
+	
 	return {
 		limit,
 		offset,
@@ -30,6 +42,7 @@ export function usePokemonQuery() {
 		query,
 		loading,
 		error,
+		loadMore
 	};
 }
 
@@ -39,8 +52,8 @@ export function usePokemonByNameQuery(name: string) {
 		name: pokemonName.value,
 	}));
 	
-	const pokemon = computed(() => {
-		return result.value?.pokemonByName as Pokemon || {};
+	const pokemon = computed((): Pokemon => {
+		return result.value?.pokemonByName || {};
 	});
 
 	return {
