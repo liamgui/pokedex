@@ -12,7 +12,7 @@ import { Pokemon } from "~/types";
 import { useFavorites } from "~/composables/useFavorites";
 import { usePokemonQuery, usePokemonTypesQuery } from "~/composables/usePokemon";
 
-import Filters from "~/components/Filters.vue"; 
+// import Filters from "~/components/Filters.vue"; 
 
 //define head
 useHead({
@@ -38,7 +38,7 @@ const { toggleFavorite } = useFavorites();
 
 <template>
 	<div class="content">
-		<Filters></Filters>
+		<!-- <Filters></Filters> -->
 		<div v-if="!pokemonsLoading && !pokemonsError">
 			<ul v-if="pokemons && pokemons.length" class="pokemon-list">
 				<li v-for="pokemon in pokemons" :key="pokemon.id" :class="{favorite: pokemon.isFavorite}">
