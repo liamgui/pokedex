@@ -1,5 +1,5 @@
 import { useQuery } from "@vue/apollo-composable";
-import { pokemonsQuery, pokemonTypesQuery } from "~/graphql/queries";
+import { pokemonNameQuery, pokemonsQuery, pokemonTypesQuery } from "~/graphql/queries";
 import { computed, Ref, ref } from "vue";
 import { Pokemon, PokemonFilterInput, PokemonQueryInput } from "~/types";
 
@@ -33,14 +33,14 @@ export function usePokemonQuery() {
 	};
 }
 
-export function usePokemonByNameQuery() {
-	const pokemonName: Ref<string> = ref("");
-	const { query, result, loading, error } = useQuery(pokemonsQuery, () => ({
+export function usePokemonByNameQuery(name: string) {
+	const pokemonName: Ref<string> = ref(name);
+	const { query, result, loading, error } = useQuery(pokemonNameQuery, () => ({
 		name: pokemonName.value,
 	}));
 	
 	const pokemon = computed(() => {
-		return result.value?.pokemon as Pokemon;
+		return result.value?.pokemonByName as Pokemon || {};
 	});
 
 	return {
