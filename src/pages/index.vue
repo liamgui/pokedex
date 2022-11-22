@@ -12,6 +12,7 @@ import { Pokemon } from "~/types";
 import { useFavorites } from "~/composables/useFavorites";
 import { usePokemonQuery, usePokemonTypesQuery } from "~/composables/usePokemon";
 
+import Filters from "~/components/Filters.vue"; 
 
 //define head
 useHead({
@@ -25,43 +26,19 @@ useHead({
 });
 
 // pokemon query
-const { data: pokemonsResult, offset, loading: pokemonsLoading, error: pokemonsError } = usePokemonQuery();
-// pokemons computed for consumption
-const pokemons: Ref<Pokemon[]> = computed(() => {
-	if (onlyFavorites.value) {
-		return pokemonsResult.value?.pokemons.edges.filter((pokemon: Pokemon) => pokemon.isFavorite);
-	} else {
-		return pokemonsResult.value?.pokemons.edges as Pokemon[] || [];
-	}
-});
+const { pokemons, offset, count, loading: pokemonsLoading, error: pokemonsError } = usePokemonQuery();
 
 // sounds object for easy retrieval
 const sounds: Ref<Record<string, HTMLAudioElement>> = ref({});
 
-//only favorites boolean ref
-const onlyFavorites: Ref<boolean> = ref(false);
-
 // favorites composable
-const { pokemonToFavorite, addFavorite, removeFavorite } = useFavorites();
-
-// function for toggling favorite on a pokemon
-async function toggleFavorite(id: string) {
-	//set the pokemon to favorite or not favorite
-	pokemonToFavorite.value = id;
-	if (pokemons.value) {
-		const pokemon = pokemons.value.find((pokemon) => pokemon.id === id);
-		if (pokemon?.isFavorite) {
-			await removeFavorite();
-		} else {
-			await addFavorite();
-		}
-	}
-}
+const { toggleFavorite } = useFavorites();
 
 </script>
 
 <template>
 	<div class="content">
+		<Filters></Filters>
 		<div v-if="!pokemonsLoading && !pokemonsError">
 			<ul v-if="pokemons && pokemons.length" class="pokemon-list">
 				<li v-for="pokemon in pokemons" :key="pokemon.id" :class="{favorite: pokemon.isFavorite}">
@@ -78,7 +55,7 @@ async function toggleFavorite(id: string) {
 								<button @click="sounds[pokemon.id].play()"></button>
 							</div>
 							{{ pokemon.types.join(", ") }}
-							<button class="heart-button" @click="toggleFavorite(pokemon.id)">
+							<button class="heart-button" @click="toggleFavorite(pokemon)">
 								<HeartSVG class="empty" />
 								<transition name="heart">
 									<HeartFilledSVG v-if="pokemon.isFavorite" class="filled" />

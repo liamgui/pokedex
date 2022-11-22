@@ -1,18 +1,31 @@
 import { useQuery } from "@vue/apollo-composable";
 import { pokemonsQuery, pokemonTypesQuery } from "~/graphql/queries";
-import { Ref, ref } from "vue";
+import { computed, Ref, ref } from "vue";
+import { Pokemon, PokemonFilterInput, PokemonQueryInput } from "~/types";
 
 export function usePokemonQuery() {
 	const limit: Ref<number> = ref(20);
 	const offset: Ref<number> = ref(0);
-	const { query, loading, error, result } = useQuery(pokemonsQuery, () => ({
+	const filter: Ref<PokemonFilterInput> = ref({});
+	const search: Ref<string> = ref("");
+
+	const { query, loading, error, result } = useQuery(pokemonsQuery, (): PokemonQueryInput => ({
 		limit: limit.value,
 		offset: offset.value,
+		filter: filter.value,
+		search: search.value,
 	}));
+
+	const pokemons: Ref<Pokemon[]> = computed(() => {
+		return result.value?.pokemons.edges as Pokemon[] || [];
+	});
+	
 
 	return {
 		limit,
 		offset,
+		pokemons,
+		count: result.value?.count,
 		data: result,
 		query,
 		loading,
@@ -26,8 +39,13 @@ export function usePokemonByNameQuery() {
 		name: pokemonName.value,
 	}));
 	
+	const pokemon = computed(() => {
+		return result.value?.pokemon as Pokemon;
+	});
+
 	return {
 		pokemonName,
+		pokemon,
 		data: result,
 		query,
 		loading,
@@ -38,8 +56,12 @@ export function usePokemonByNameQuery() {
 export function usePokemonTypesQuery() {
 	const { query, result, loading, error } = useQuery(pokemonTypesQuery);
 	
+	const types = computed(() => {
+		return result.value?.pokemonTypes || [];
+	});
 	return {
 		data: result,
+		types,
 		query,
 		loading,
 		error
