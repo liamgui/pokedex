@@ -92,3 +92,22 @@ a {
 
 
 
+.heart-enter-active,
+.heart-leave-active {
+	--menu-timing: 0.075s;
+	transition: transform var(--menu-timing) ease;
+}
+
+.heart-leave-to {
+//   opacity: 0;
+  transform: scale(0);
+}
+
+
+.heart-enter-from {
+	transform: scale(0);
+}
+
+// .heart {
+// 	transform: scale(1);
+// }
