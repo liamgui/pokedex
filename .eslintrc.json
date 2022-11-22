@@ -1,10 +1,12 @@
 {
 	"plugins": [
 		"@typescript-eslint",
+		"cypress"
 	],
 	"extends": [
 		"eslint:recommended",
-		"plugin:vue/vue3-recommended"
+		"plugin:vue/vue3-recommended",
+		"plugin:cypress/recommended"
 	],
 	"parser": "vue-eslint-parser",
 	"parserOptions": {
