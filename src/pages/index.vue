@@ -60,6 +60,8 @@ const load = () => {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 400px);
 	grid-gap: 20px;
+	list-style: none;
+	justify-content: center;
 }
 
 </style>

@@ -46,7 +46,7 @@ const { toggleFavorite } = useFavorites();
 	justify-content: center;
 	background: white;
 	/* width: 310px; */
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0 7px rgba(0, 0, 0, 0.25);
 	& img {
 		height: 200px;
 	}
