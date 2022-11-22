@@ -18,3 +18,15 @@ export type PokemonDimension = {
 	minimum: string;
 	maximum: string;
 }
+
+export type PokemonQueryInput = {
+	limit: number;
+	offset?: number;
+	search?: string;
+	filter?: PokemonFilterInput;
+}
+
+export type PokemonFilterInput = {
+	type?: string;
+	isFavorite?: boolean;
+}
