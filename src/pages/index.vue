@@ -1,17 +1,12 @@
 <script setup lang="ts">
 
-import { computed, ref, Ref } from "vue";
+import { computed } from "vue";
 //head
 import { useHead } from "@vueuse/head";
-//card
-import Card from "~/components/Card.vue";
-//types
-import { Pokemon } from "~/types";
-//composables
-import { useFavorites } from "~/composables/useFavorites";
-import { usePokemonQuery, usePokemonTypesQuery } from "~/composables/usePokemon";
 
-// import Filters from "~/components/Filters.vue"; 
+
+import Filters from "~/components/Filters.vue";
+import PokemonList from "~/components/PokemonList.vue";
 
 //define head
 useHead({
@@ -24,28 +19,12 @@ useHead({
 	],
 });
 
-// pokemon query
-const { pokemons, count, loading: pokemonsLoading, error: pokemonsError, loadMore } = usePokemonQuery();
-
-const load = () => {
-	loadMore();
-};
-
-
 </script>
 
 <template>
 	<div class="content">
-		<!-- <Filters></Filters> -->
-		<div v-if="!pokemonsLoading && !pokemonsError">
-			<ul v-if="pokemons && pokemons.length" v-infinite-scroll="load" class="pokemon-list">
-				<li v-for="pokemon in pokemons" :key="pokemon.id" :class="{favorite: pokemon.isFavorite}">
-					<Card :pokemon="pokemon" />
-				</li>
-			</ul>
-		</div>
-		<div v-else-if="pokemonsError"></div>
-		<div v-else class="loading"></div>
+		<Filters></Filters>
+		<Pokemon-List></Pokemon-List>
 	</div>
 </template>
 
@@ -54,14 +33,6 @@ const load = () => {
 .content {
 	width: 100%;
 	height: 100%;
-}
-
-.pokemon-list {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, 400px);
-	grid-gap: 20px;
-	list-style: none;
-	justify-content: center;
 }
 
 </style>

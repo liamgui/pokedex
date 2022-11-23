@@ -1,15 +1,17 @@
 import { useQuery } from "@vue/apollo-composable";
 import { pokemonNameQuery, pokemonsQuery, pokemonTypesQuery } from "~/graphql/queries";
-import { computed, ComputedRef, Ref, ref } from "vue";
+import { computed, ComputedRef, Ref, ref, watch } from "vue";
 import { Pokemon, PokemonFilterInput, PokemonQueryInput } from "~/types";
+import { useFilterStore } from "~/stores/useFilterStore";
 
 export function usePokemonQuery() {
 	const limit: Ref<number> = ref(20);
 	const offset: Ref<number> = ref(0);
 	const filter: Ref<PokemonFilterInput> = ref({});
 	const search: Ref<string> = ref("");
+	// const count: Ref<number> = ref(0);
 
-	const { query, loading, error, result, fetchMore } = useQuery(pokemonsQuery, (): PokemonQueryInput => ({
+	const { query, loading, error, result, fetchMore, refetch, onResult } = useQuery(pokemonsQuery, (): PokemonQueryInput => ({
 		limit: limit.value,
 		offset: offset.value,
 		filter: filter.value,
@@ -18,6 +20,10 @@ export function usePokemonQuery() {
 
 	const pokemons: ComputedRef<Pokemon[]> = computed((): Pokemon[] => {
 		return result.value?.pokemons.edges || [];
+	});
+
+	const count: ComputedRef<number> = computed((): number => {
+		return result.value?.pokemons.count || 0;
 	});
 
 	const loadMore = () => {
@@ -32,17 +38,33 @@ export function usePokemonQuery() {
 		});
 	};
 
+	const { filters } = useFilterStore();
+	watch(filters, (filters) => {
+		filter.value = filters;
+		offset.value = 0;
+		refetch(
+			{
+				limit: limit.value,
+				offset: 0,
+				filter: filters,
+				search: search.value,
+
+			}
+		);
+	});
 	
+
 	return {
 		limit,
 		offset,
 		pokemons,
-		count: result.value?.count,
 		data: result,
 		query,
 		loading,
 		error,
-		loadMore
+		loadMore,
+		onResult,
+		count
 	};
 }
 
