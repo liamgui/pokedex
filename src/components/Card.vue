@@ -16,11 +16,26 @@ defineProps<Props>();
 const { toggleFavorite } = useFavorites();
 const { setSelectedPokemonType } = useViewStore();
 
+const hoveringType = ref("");
+
+const typeHover = (type: string) => {
+	hoveringType.value = type;
+	setTimeout(() => {
+		if (hoveringType.value === type) {
+			setSelectedPokemonType(type);
+		}
+	}, 400);
+};
+
+const typeLeave = () => {
+	hoveringType.value = "";
+	setSelectedPokemonType("");
+};
 </script>
 <template>
 	<div
 		class="card"
-		@mouseleave="setSelectedPokemonType('')"
+		@mouseleave="typeLeave()"
 	>
 		<router-link class="image-container" :to="'/pokemon/' + pokemon.name.replace(' ', '_').toLowerCase()">
 			<img v-if="pokemon.image" :src="pokemon.image" />
@@ -36,7 +51,7 @@ const { setSelectedPokemonType } = useViewStore();
 						:key="ptype"
 						class="type"
 						:class="'type-' + ptype.toLowerCase() + '-background'"
-						@mouseover="setSelectedPokemonType(ptype.toLowerCase())"
+						@mouseover="typeHover(ptype.toLowerCase())"
 					>
 						{{ ptype }}
 					</div>
