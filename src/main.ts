@@ -26,14 +26,17 @@ const cache = new InMemoryCache({
 					// any of this field's arguments.
 					keyArgs: false,
 					
-					// Concatenate the incoming list of edges with
-					// the existing list of edges.
-					merge(existing = {edges: []}, incoming) {
+					merge(existing = {edges: []}, incoming, options) {
+						//if there are no more incoming edges, return the existing edges
 						if (!incoming || !incoming.edges.length) return existing;
-						const edges = existing.edges.concat(incoming.edges);
+						//return incoming if not a fetchmore
+						if (options.args?.query.offset === 0) return incoming;
+						// Concatenate the incoming list of edges with
+						// the existing list of edges.
+						const edges = [...new Set([...existing.edges, ...incoming.edges])];
 						return {...existing, ...incoming, edges};
 					},
-				}
+				},
 			}
 		}
 	}
