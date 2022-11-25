@@ -3,6 +3,7 @@ import { pokemonNameQuery, pokemonsQuery, pokemonTypesQuery } from "~/graphql/qu
 import { computed, ComputedRef, Ref, ref, watch } from "vue";
 import { Pokemon, PokemonFilterInput, PokemonQueryInput } from "~/types";
 import { useFilterStore } from "~/stores/useFilterStore";
+import { storeToRefs } from "pinia";
 
 export function usePokemonQuery() {
 	const limit: Ref<number> = ref(20);
@@ -38,21 +39,22 @@ export function usePokemonQuery() {
 		});
 	};
 
-	const { filters } = useFilterStore();
-	watch(filters, (filters) => {
-		filter.value = filters;
+	//watch filters for changes (both search and filters)
+	const store = useFilterStore();
+	store.$subscribe(() => {
+		const { filters: filtersStore, search: searchStore } = storeToRefs(store);
 		offset.value = 0;
+		filter.value = filtersStore.value;
+		search.value = searchStore.value;
 		refetch(
 			{
 				limit: limit.value,
 				offset: 0,
-				filter: filters,
-				search: search.value,
-
+				filter: filtersStore.value,
+				search: searchStore.value,
 			}
 		);
 	});
-	
 
 	return {
 		limit,
