@@ -9,10 +9,14 @@ const { types, loading: pokemonTypesLoading, error: pokemonTypesError } = usePok
 
 const { setFilter } = useFilterStore();
 
+
+
 </script>
 <template>
 	<button @click="setFilter(null, 'isFavorite')">All</button>
 	<button @click="setFilter(true, 'isFavorite')">Favorites</button>
 	<Dropdown :options="types" title="Types" @change="setFilter($event, 'type')"></Dropdown>
 	<SearchBar></SearchBar>
+	<button @click="setFilter('grid', 'view')">Grid</button>
+	<button @click="setFilter('list', 'view')">List</button>
 </template>
