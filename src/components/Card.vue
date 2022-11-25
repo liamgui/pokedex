@@ -5,7 +5,7 @@ import { Pokemon } from "~/types";
 import HeartSVG from "~/assets/svgs/heart.svg?component";
 import HeartFilledSVG from "~/assets/svgs/heart-filled.svg?component";
 import Audio from "~/components/Audio.vue";
-import { useTypesStore } from "~/stores/useTypesStore";
+import { useViewStore } from "~/stores/useViewStore";
 
 interface Props {
 	pokemon: Pokemon,
@@ -14,13 +14,13 @@ defineProps<Props>();
 
 // favorites composable
 const { toggleFavorite } = useFavorites();
-const { setSelectedType } = useTypesStore();
+const { setSelectedPokemonType } = useViewStore();
 
 </script>
 <template>
 	<div
 		class="card"
-		@mouseleave="setSelectedType('')"
+		@mouseleave="setSelectedPokemonType('')"
 	>
 		<router-link class="image-container" :to="'/pokemon/' + pokemon.name.replace(' ', '_').toLowerCase()">
 			<img v-if="pokemon.image" :src="pokemon.image" />
@@ -35,8 +35,8 @@ const { setSelectedType } = useTypesStore();
 						v-for="ptype of pokemon.types"
 						:key="ptype"
 						class="type"
-						:class="'type-' + ptype.toLowerCase()"
-						@mouseover="setSelectedType(ptype.toLowerCase())"
+						:class="'type-' + ptype.toLowerCase() + '-background'"
+						@mouseover="setSelectedPokemonType(ptype.toLowerCase())"
 					>
 						{{ ptype }}
 					</div>
@@ -53,15 +53,18 @@ const { setSelectedType } = useTypesStore();
 </template>
 
 <style scoped>
+
 .card {
 	background: white;
 	/* width: 310px; */
 	box-shadow: 0 0 7px rgba(0, 0, 0, 0.25);
 	padding: 0;
 	/* padding-top: 2rem; */
-	min-height: 320px;
+	height: var(--card-height);
+	width: 100%;
 	position: relative;
 	transition: all 0.2s ease-in-out;
+	/* transition-property: box-shadow, transform; */
 	&:hover {
 		transform: scale(1.015);
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);

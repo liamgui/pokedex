@@ -6,8 +6,6 @@ export type Filters = {
 	// [key: string]: string;
 	isFavorite: boolean;
 	type: string;
-	view: "grid" | "list";
-
 }
 
 export const useFilterStore = defineStore(

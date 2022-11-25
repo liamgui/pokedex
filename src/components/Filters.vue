@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import Dropdown from "~/components/Dropdown.vue";
 import SearchBar from "~/components/SearchBar.vue";
-import { Ref, ref, computed } from "vue";
 import { usePokemonTypesQuery } from "~/composables/usePokemon";
-import { useFilterStore, Filters } from "~/stores/useFilterStore";
+import { useFilterStore } from "~/stores/useFilterStore";
+import { useViewStore } from "~/stores/useViewStore";
 // pokemon types query
 const { types, loading: pokemonTypesLoading, error: pokemonTypesError } = usePokemonTypesQuery();
 
 const { setFilter } = useFilterStore();
+const { setViewType } = useViewStore();
 
 
 
@@ -17,6 +18,6 @@ const { setFilter } = useFilterStore();
 	<button @click="setFilter(true, 'isFavorite')">Favorites</button>
 	<Dropdown :options="types" title="Types" @change="setFilter($event, 'type')"></Dropdown>
 	<SearchBar></SearchBar>
-	<button @click="setFilter('grid', 'view')">Grid</button>
-	<button @click="setFilter('list', 'view')">List</button>
+	<button @click="setViewType('grid')">Grid</button>
+	<button @click="setViewType('list')">List</button>
 </template>

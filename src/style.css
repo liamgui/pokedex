@@ -113,7 +113,15 @@ a {
 	color: white;
 }
 
+.pokemon-list.list {
+	display: grid;
+	grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+	grid-gap: 1rem;
 
+}
+
+
+// heart transition/animation
 
 .heart-enter-active,
 .heart-leave-active {
@@ -131,80 +139,81 @@ a {
 	transform: scale(0);
 }
 
+// type colors
 
-.type-normal {
+.type-normal-background {
     background-color: var(--normal-color);
 }
 
-.type-fire {
+.type-fire-background {
     background-color: var(--fire-color);
 }
 
-.type-water {
+.type-water-background {
     background-color: var(--water-color);
 }
 
-.type-electric {
+.type-electric-background {
     background-color: var(--electric-color);
 }
 
-.type-grass {
+.type-grass-background {
     background-color: var(--grass-color);
 }
 
-.type-ice {
+.type-ice-background {
     background-color: var(--ice-color);
 }
 
-.type-fighting {
+.type-fighting-background {
     background-color: var(--fighting-color);
 }
 
-.type-poison {
+.type-poison-background {
     background-color: var(--poison-color);
 }
 
-.type-ground {
+.type-ground-background {
     background-color: var(--ground-color);
 }
 
-.type-flying {
+.type-flying-background {
     background-color: var(--flying-color);
 }
 
-.type-psychic {
+.type-psychic-background {
     background-color: var(--psychic-color);
 }
 
-.type-bug {
+.type-bug-background {
     background-color: var(--bug-color);
 }
 
-.type-rock {
+.type-rock-background {
     background-color: var(--rock-color);
 }
 
-.type-ghost {
+.type-ghost-background {
     background-color: var(--ghost-color);
 }
 
-.type-dragon {
+.type-dragon-background {
     background-color: var(--dragon-color);
 }
 
-.type-dark {
+.type-dark-background {
     background-color: var(--dark-color);
 }
 
-.type-steel {
+.type-steel-background {
     background-color: var(--steel-color);
 }
 
-.type-fairy {
+.type-fairy-background {
     background-color: var(--fairy-color);
 }
 
-.type-curse {
+.type-curse-background {
     background-color: var(--curse-color);
 }
 
