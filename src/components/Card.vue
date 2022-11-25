@@ -5,6 +5,7 @@ import { Pokemon } from "~/types";
 import HeartSVG from "~/assets/svgs/heart.svg?component";
 import HeartFilledSVG from "~/assets/svgs/heart-filled.svg?component";
 import Audio from "~/components/Audio.vue";
+import { useTypesStore } from "~/stores/useTypesStore";
 
 interface Props {
 	pokemon: Pokemon,
@@ -13,21 +14,34 @@ defineProps<Props>();
 
 // favorites composable
 const { toggleFavorite } = useFavorites();
+const { setSelectedType } = useTypesStore();
 
 </script>
 <template>
-	<div class="card">
-		<router-link :to="'/pokemon/' + pokemon.name.replace(' ', '_').toLowerCase()">
+	<div
+		class="card"
+		@mouseleave="setSelectedType('')"
+	>
+		<router-link class="image-container" :to="'/pokemon/' + pokemon.name.replace(' ', '_').toLowerCase()">
 			<img v-if="pokemon.image" :src="pokemon.image" />
 		</router-link>
 		<div class="bottom-bar">
-			<router-link :to="'/pokemon/' + pokemon.name.replace(' ', '_').toLowerCase()">
-				<h2>{{ pokemon.name }}</h2>
-			</router-link>
-			<div v-if="pokemon.sound">
-				<Audio :sound-src="pokemon.sound" />
+			<div class="title-type">
+				<router-link :to="'/pokemon/' + pokemon.name.replace(' ', '_').toLowerCase()">
+					<h2>{{ pokemon.name }}</h2>
+				</router-link>
+				<div class="types">
+					<div
+						v-for="ptype of pokemon.types"
+						:key="ptype"
+						class="type"
+						:class="'type-' + ptype.toLowerCase()"
+						@mouseover="setSelectedType(ptype.toLowerCase())"
+					>
+						{{ ptype }}
+					</div>
+				</div>
 			</div>
-			{{ pokemon.types.join(", ") }}
 			<button class="heart-button" @click="toggleFavorite(pokemon)">
 				<HeartSVG class="empty" />
 				<transition name="heart">
@@ -40,26 +54,84 @@ const { toggleFavorite } = useFavorites();
 
 <style scoped>
 .card {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 	background: white;
 	/* width: 310px; */
 	box-shadow: 0 0 7px rgba(0, 0, 0, 0.25);
-	& img {
-		height: 200px;
+	padding: 0;
+	/* padding-top: 2rem; */
+	min-height: 320px;
+	position: relative;
+	transition: all 0.2s ease-in-out;
+	&:hover {
+		transform: scale(1.015);
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	}
-	& h2 {
-		color: var(--black);
-	}
+}
+
+.image-container {
+	/* padding: 1rem; */
+	position: relative;
+	width: 100%;
+}
+
+img {
+	padding: 1.5rem;
+	height: 200px;
+	max-width: 100%;
+	object-fit: contain;
+	box-sizing: border-box;
+}
+
+h2 {
+	color: var(--black);
+	text-align: left;
+	margin: 0;
+	margin-bottom: 1rem;
+}
+
+.types {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+.type {
+	width: 100px;
+	border-radius: 5px;
+	/* font-family: Montserrat, sans-serif; */
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	margin-right: 0.25rem;
+	color: white;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+	position: relative;
+	cursor: default;
+}
+
+.bottom-bar {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	padding: 1rem;
+	width: 100%;
+	position: absolute;
+	box-sizing: border-box;
+	background: rgba(var(--light-blue-value), 0.35);
+	bottom: 0;
+	z-index: 0;
+	/* min-height: 90px; */
 }
 
 .heart-button {
 	background: transparent;
 	border: none;
 	position: relative;
-    height: 80px;
+    height: 25px;
+	/* position: absolute;
+	bottom: 1rem;
+	right: 1rem; */
 	& svg {
 		position: absolute;
 		top: 0;
@@ -71,4 +143,5 @@ const { toggleFavorite } = useFavorites();
 		outline: none;
 	}
 }
+
 </style>
