@@ -27,6 +27,7 @@ const emits = defineEmits<{
 		</el-button>
 		<template #dropdown>
 			<el-dropdown-menu>
+				<el-dropdown-item :command="null"></el-dropdown-item>
 				<el-dropdown-item v-for="option of options" :key="option" :command="option">{{ option }}</el-dropdown-item>
 			</el-dropdown-menu>
 		</template>
