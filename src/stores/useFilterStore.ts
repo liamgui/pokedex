@@ -18,6 +18,11 @@ export const useFilterStore = defineStore(
 			filters.value[key] = value;
 		}
 
+		function toggleFavoriteView() {
+			if (!filters.value.isFavorite) return setFilter(true, "isFavorite");
+			return setFilter(null, "isFavorite");
+		}
+
 		function updateSearch(value: string) {
 			search.value = value;
 		}
@@ -25,6 +30,7 @@ export const useFilterStore = defineStore(
 		return {
 			filters,
 			setFilter,
+			toggleFavoriteView,
 			search,
 			updateSearch
 		};
