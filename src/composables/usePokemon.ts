@@ -72,7 +72,7 @@ export function usePokemonQuery() {
 
 export function usePokemonByNameQuery(name: string) {
 	const pokemonName: Ref<string> = ref(name);
-	const { query, result, loading, error } = useQuery(pokemonNameQuery, () => ({
+	const { query, result, loading, error, refetch } = useQuery(pokemonNameQuery, () => ({
 		name: pokemonName.value,
 	}));
 	
@@ -86,7 +86,8 @@ export function usePokemonByNameQuery(name: string) {
 		data: result,
 		query,
 		loading,
-		error
+		error,
+		refetch
 	};
 }
 

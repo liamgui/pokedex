@@ -44,10 +44,12 @@ export const pokemonNameQuery = gql`
 			evolutions {
 				id
 				name
+				image
 			}
 			previousEvolutions {
 				id
 				name
+				image
 			}
 			image
 			sound

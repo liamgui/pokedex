@@ -23,13 +23,13 @@ const { toggleFavorite } = useFavorites();
 
 
 const to = computed(() => {
-	return props.pokemon.name.replace(" ", "_");
+	return props.pokemon?.name?.replace(" ", "_") || "";
 });
 
 </script>
 <template>
 	<router-link :to="to">
-		<div class="pokemon" :to="to">
+		<div class="pokemon">
 			<div class="image-container top">
 				<img v-if="pokemon.image" :src="pokemon.image" />
 			</div>
