@@ -30,3 +30,12 @@ export type PokemonFilterInput = {
 	type?: string;
 	isFavorite?: boolean;
 }
+
+export type PokemonQueryResult = {
+	pokemons: {
+		limit: number;
+		offset: number;
+		count: number;
+		edges: Pokemon[];
+	}
+}

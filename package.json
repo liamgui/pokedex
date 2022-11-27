@@ -21,7 +21,7 @@
     "eslint-config-prettier": "^8.5.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
-    "pinia": "^2.0.0-rc.10",
+    "pinia": "^2.0.26",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
     "vite-plugin-fonts": "^0.6.0",

@@ -18,8 +18,12 @@ export default defineConfig({
 			google: {
 				families: [
 					{
-						name: "Lato",
-						styles: "wght@300;400;700;900",
+						name: "Montserrat",
+						styles: "wght@300;400;700;800;900",
+					},
+					{
+						name: "Fira Sans",
+						styles: "wght@300;400;700;800;900",
 					}
 				],
 			},

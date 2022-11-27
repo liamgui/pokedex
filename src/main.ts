@@ -1,8 +1,11 @@
 import "./style.css";
+import "element-plus/dist/index.css";
 
 import { ApolloClient, InMemoryCache } from "@apollo/client/core";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import { createHead } from "@vueuse/head";
+import ElementPlus from "element-plus";
+import { createPinia } from "pinia";
 import { createApp, h, provide } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "~pages";
@@ -23,14 +26,17 @@ const cache = new InMemoryCache({
 					// any of this field's arguments.
 					keyArgs: false,
 					
-					// Concatenate the incoming list of edges with
-					// the existing list of edges.
-					merge(existing = {edges: []}, incoming) {
+					merge(existing = {edges: []}, incoming, options) {
+						//if there are no more incoming edges, return the existing edges
 						if (!incoming || !incoming.edges.length) return existing;
-						const edges = existing.edges.concat(incoming.edges);
+						//return incoming if not a fetchmore
+						if (options.args?.query.offset === 0) return incoming;
+						// Concatenate the incoming list of edges with
+						// the existing list of edges.
+						const edges = [...new Set([...existing.edges, ...incoming.edges])];
 						return {...existing, ...incoming, edges};
 					},
-				}
+				},
 			}
 		}
 	}
@@ -50,6 +56,11 @@ const app = createApp({
 });
 
 const head = createHead();
+const pinia = createPinia();
+
 app.use(head);
+app.use(ElementPlus);
 app.use(router);
+app.use(pinia);
+
 app.mount("#app");
