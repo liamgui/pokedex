@@ -2,6 +2,7 @@
 	--black: #0d0d0f;
 	--light-blue-value: 182, 188, 201;
 	--light-blue: rgb(var(--light-blue-value));
+	--light-gray: #e6e8ec;
 
 	//types colors
 	--normal-color: #aa9;
