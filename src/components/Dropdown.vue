@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { ArrowDown } from "@element-plus/icons-vue";
 import { emitKeypressEvents } from "readline";
+import { ref, watch } from "vue";
 
-defineProps<{
+const props = defineProps<{
 	options: string[],
 	title: string
 }>();
+
+const value = ref("");
 
 const handleCommand = (value: string | number) => {
 	emits(changeEmitName, value);
@@ -19,19 +22,21 @@ const emits = defineEmits<{
 </script>
 
 <template>
-	<el-dropdown trigger="click" @command="handleCommand">
-		<el-button type="primary">
-			{{ title }}<el-icon class="el-icon--right">
-				<arrow-down />
-			</el-icon>
-		</el-button>
-		<template #dropdown>
-			<el-dropdown-menu>
-				<el-dropdown-item :command="null"></el-dropdown-item>
-				<el-dropdown-item v-for="option of options" :key="option" :command="option">{{ option }}</el-dropdown-item>
-			</el-dropdown-menu>
-		</template>
-	</el-dropdown>
+	<el-select
+		v-model="value"
+		class="m-2"
+		:placeholder="title"
+		size="large"
+		@change="handleCommand"
+	>
+		<el-option value="" />
+		<el-option
+			v-for="item in options"
+			:key="item"
+			:label="item"
+			:value="item.toLowerCase()"
+		/>
+	</el-select>
 </template>
 
 <style scoped>
