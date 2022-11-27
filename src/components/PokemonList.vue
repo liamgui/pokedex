@@ -1,79 +1,76 @@
 <script setup lang="ts">
-import { computed, watch } from "vue";
 //composables
-import { usePokemonQuery } from "~/composables/usePokemon";
-//card
-import Card from "~/components/Card.vue";
-//filters for favorites
-import { useFilterStore } from "~/stores/useFilterStore";
 import { useViewStore } from "~/stores/useViewStore";
+//pokemonitem
+import PokemonItem from "~/components/PokemonItem.vue";
+//filters for favorites
 import { storeToRefs } from "pinia";
+import { Pokemon } from "~/types";
+import { onMounted } from "vue";
 
-// pokemon query
-const { pokemons, loading: pokemonsLoading, error: pokemonsError, loadMore, count } = usePokemonQuery();
-const { filters } = useFilterStore();
-
-const filteredPokemons = computed(() => {
-	if (filters.isFavorite) return pokemons.value.filter((pokemon) => pokemon.isFavorite);
-	return pokemons.value;
-});
-
-
-const load = () => {
-	// if pokemon count is greater than or equal to total count.. don't load more
-	// or if pokemons count is 0, don't load more
-	if (!pokemons.value.length || pokemons.value.length >= count.value) return;
-	loadMore();
+type Props = {
+  pokemons: Pokemon[];
+  displayTypes?: boolean;
+  displayFavorite?: boolean;
+  viewType?: string;
 };
+const props = withDefaults(
+	defineProps<Props>(),
+	{
+		displayTypes: true,
+		displayFavorite: true,
+		viewType: "grid"
+	}
+);
 
 const typesClass = (type: string | string[]) => {
+	if (!props.displayTypes) return "";
 	if (Array.isArray(type)) return type.map((t) => `type-${t.toLowerCase()}`);
 	return "type-" + type.toLowerCase();
 };
 
-const { selectedPokemonType } = storeToRefs(useViewStore());
-const { viewType } = storeToRefs(useViewStore());
-
+const { selectedPokemonType: selectedPokemonTypeRef } = storeToRefs(useViewStore());
 // function to check if pokemon type is selectedPokemonType
 const isSelectedType = (types: string[], reverse: boolean = false) => {
-	if (!selectedPokemonType.value) return false;
-	const result = types.find((type) => type.toLowerCase() === selectedPokemonType.value);
+	if (!props.displayTypes || !selectedPokemonTypeRef.value) return false;
+	const result = types.find((type) => type.toLowerCase() === selectedPokemonTypeRef.value);
 	return reverse ? !result : result;
 };
 
 </script>
 <template>
-	<div v-if="!pokemonsLoading && !pokemonsError">
-		<ul
-			v-if="filteredPokemons && filteredPokemons.length"
-			v-infinite-scroll="load"
-			infinite-scroll-immediate="false"
-			class="pokemon-list"
-			:class="viewType"
-		>
-			<li v-for="pokemon in filteredPokemons" :key="pokemon.id" :class="[{favorite: pokemon.isFavorite, fade: isSelectedType(pokemon.types, true), }, typesClass(pokemon.types), 'pokemon']">
-				<Card :pokemon="pokemon" />
-			</li>
-		</ul>
-	</div>
-	<div v-else-if="pokemonsError"></div>
-	<div v-else class="loading"></div>
+	<ul
+		v-if="pokemons && pokemons.length"
+		class="pokemon-list"
+		:class="viewType"
+	>
+		<li v-for="pokemon in pokemons" :key="pokemon.id" :class="[{favorite: displayFavorite && pokemon.isFavorite, fade: displayTypes ?isSelectedType(pokemon.types, true) : false, }, typesClass(pokemon.types), 'pokemon']">
+			<PokemonItem :pokemon="pokemon" :display-types="displayTypes" :display-favorite="displayFavorite" />
+		</li>
+	</ul>
 </template>
 
 <style scoped>
+.pokemon-list {
+	margin: 3rem 0;
+}
 .pokemon-list.grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 275px);
 	grid-gap: 20px;
 	list-style: none;
 	justify-content: center;
+	@media screen and (min-width: 1920px) {
+		grid-template-columns: repeat(auto-fill, 350px);
+	}
 }
 
 .pokemon-list.list {
 	display: list-item;
 	list-style: none;
 	padding-left: 0;
-	margin: 0 4rem;
+	max-width: 1280px;
+	margin: 3rem auto;
 }
 
 
@@ -85,12 +82,10 @@ const isSelectedType = (types: string[], reverse: boolean = false) => {
 	opacity: 0.25;
 }
 
-.list >>> .card {
+.list:deep() .pokemon {
 	--card-height: 100px;
-	display: flex;
-	/* box-shadow: none; */
-	/* border-bottom: 1px solid #ccc; */
 	margin-bottom: 0.5rem;
+	flex-direction: row;
 	&:hover {
 		transform: none;
 		background: rgba(255, 255, 255, 0.7)
@@ -98,18 +93,21 @@ const isSelectedType = (types: string[], reverse: boolean = false) => {
 	& a {
 		width: 100px;
 	}
+	& .image-container {
+		width: 120px;
+		flex: initial;
+
+	}
 	& img {
-		/* width: 110px; */
-		height: 100%;
+		max-height: 100px;
 		object-fit: contain;
 		padding: 0.5rem;
 	}
 	& .bottom-bar {
-		/* background: transparent; */
-		position: relative;
+		flex: 1 1 auto;
 	}
 }
-.grid >>> .card {
-	--card-height: 320px;
+.grid:deep() .pokemon {
+	--listing-height: 320px;
 }
 </style>
