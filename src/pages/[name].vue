@@ -9,6 +9,7 @@ import { computed, onMounted, watch } from "vue";
 import { usePokemonByNameQuery } from "~/composables/usePokemon";
 import PokemonTypes from "~/components/PokemonTypes.vue";
 import PokemonList from "~/components/PokemonList.vue";
+import BarChart from "~/components/BarChart.vue";
 import { Pokemon } from "~/types";
 import { useRoute } from "vue-router";
 
@@ -32,17 +33,16 @@ const evolutions = computed(() => {
 	if (!pokemon.value) return [];
 	const previousEvolutions: Pokemon[] = pokemon.value.previousEvolutions || [];
 	const nextEvolutions: Pokemon[] = pokemon.value.evolutions || [];
-	const combined = [...previousEvolutions, pokemon.value, ...nextEvolutions];
-	return combined.sort((a,b) => a.id.localeCompare(b.id));
+	return [...previousEvolutions, pokemon.value, ...nextEvolutions].sort((a,b) => a.id.localeCompare(b.id));
 });
 
 const route = useRoute();
 
 watch(
 	() => (route.params),
-	(params: { name: string }) => {
+	async (params: { name: string }) => {
 		if (route.params.name) {
-			refetch({ name: params.name.replace("_", " ")});
+			await refetch({ name: params.name.replace("_", " ")});
 		}
 	},
 	{ immediate: true }
@@ -60,9 +60,9 @@ watch(
 						<div class="height">
 							Height: {{ pokemon?.height.minimum }} - {{ pokemon?.height.maximum }}
 						</div>
-						<div class="width">
+						<!-- <div class="width">
 							Width: {{ pokemon?.weight.minimum }} - {{ pokemon?.weight.maximum }}
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="pokemon-info">
@@ -70,8 +70,13 @@ watch(
 					<div v-if="pokemon.types" class="pokemon-info-types">
 						<PokemonTypes :types="pokemon.types"></PokemonTypes>
 					</div>
-					{{ pokemon?.maxCP }}
-					{{ pokemon?.maxHP }}
+					<div v-if="pokemon.image && pokemon.maxCP && pokemon.maxHP" class="chart">
+						<BarChart :inputs="[pokemon?.maxCP, pokemon?.maxHP]" :labels="['CP', 'HP']"></BarChart>
+					</div>
+					<div class="height-weight">
+						<p>Height: {{ pokemon?.height.minimum }} - {{ pokemon?.height.maximum }}</p>
+						<p>Weight: {{ pokemon?.weight.minimum }} - {{ pokemon?.weight.maximum }}</p>
+					</div>
 				</div>
 			</div>
 			<div v-if="evolutions && evolutions.length" class="bottom">
@@ -116,21 +121,15 @@ watch(
 	justify-content: flex-start;
 	height: 100%;
 	margin-right: 7rem;
+	width: 30%;
 }
 
 .image-container {
 	position: relative;
 	& img {
 		width: 100%;
-	}
-	&::before {
-		content: "";
-		position: absolute;
-		bottom: -4rem;
-		left: 0;
-		width: 100%;
-		height: 2px;
-		background: var(--light-blue);
+		height: 400px;
+		object-fit: contain;
 	}
 	&::after {
 		content: "";
@@ -149,15 +148,6 @@ watch(
 	padding: 0.5rem 1rem;
 	/* font-size: 0.85rem; */
 	transform: translateY(-50%) rotate(-90deg);
-}
-.width {
-	position: absolute;
-	bottom: -6.5rem;
-	left: 50%;
-	padding: 0.5rem 1rem;
-	width: 100%;
-	/* font-size: 0.8rem; */
-	transform: translateX(-50%);
 }
 
 .pokemon-info {
@@ -200,5 +190,9 @@ watch(
 
 		}
 	}
+}
+.chart {
+	/* height: 100%; */
+	width: 100%;
 }
 </style>
