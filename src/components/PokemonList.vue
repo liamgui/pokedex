@@ -45,7 +45,11 @@ const isSelectedType = (types: string[], reverse: boolean = false) => {
 		:class="viewType"
 	>
 		<li v-for="pokemon in pokemons" :key="pokemon.id" :class="[{favorite: displayFavorite && pokemon.isFavorite, fade: displayTypes ?isSelectedType(pokemon.types, true) : false, }, typesClass(pokemon.types), 'pokemon']">
-			<PokemonItem :pokemon="pokemon" :display-types="displayTypes" :display-favorite="displayFavorite" />
+			<PokemonItem
+				:pokemon="pokemon"
+				:display-types="displayTypes"
+				:display-favorite="displayFavorite"
+				:view-type="viewType" />
 		</li>
 	</ul>
 </template>
@@ -53,15 +57,22 @@ const isSelectedType = (types: string[], reverse: boolean = false) => {
 <style scoped>
 .pokemon-list {
 	margin: 3rem 0;
+	padding: 0;
 }
 .pokemon-list.grid {
+	--grid-item-width: 275px;
 	display: grid;
-	grid-template-columns: repeat(auto-fill, 275px);
+	grid-template-columns: repeat(auto-fill, var(--grid-item-width));
 	grid-gap: 20px;
 	list-style: none;
 	justify-content: center;
+	--listing-height: 320px;
+
 	@media screen and (min-width: 1920px) {
-		grid-template-columns: repeat(auto-fill, 350px);
+		--grid-item-width: 360px;
+	}
+	@media screen and (max-width: 768px) {
+		--grid-item-width: 215px;
 	}
 }
 
@@ -71,6 +82,7 @@ const isSelectedType = (types: string[], reverse: boolean = false) => {
 	padding-left: 0;
 	max-width: 1280px;
 	margin: 3rem auto;
+	--listing-height: 100px;
 }
 
 
@@ -82,32 +94,4 @@ const isSelectedType = (types: string[], reverse: boolean = false) => {
 	opacity: 0.25;
 }
 
-.list:deep() .pokemon {
-	--card-height: 100px;
-	margin-bottom: 0.5rem;
-	flex-direction: row;
-	&:hover {
-		transform: none;
-		background: rgba(255, 255, 255, 0.7)
-	}
-	& a {
-		width: 100px;
-	}
-	& .image-container {
-		width: 120px;
-		flex: initial;
-
-	}
-	& img {
-		max-height: 100px;
-		object-fit: contain;
-		padding: 0.5rem;
-	}
-	& .bottom-bar {
-		flex: 1 1 auto;
-	}
-}
-.grid:deep() .pokemon {
-	--listing-height: 320px;
-}
 </style>
