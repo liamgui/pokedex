@@ -24,7 +24,19 @@ watch(
 </script>
 <template>
 	<div class="search-bar">
-		<input v-model="searchText" type="text" @input="updateSearch(searchText)" />
-		<CloseSVG></CloseSVG>
+		<el-input
+			v-model="searchText"
+			clearable
+			class="input"
+			size="large"
+			type="text"
+			placeholder="Search"
+			@input="updateSearch(searchText)" />
+		<!-- <CloseSVG></CloseSVG> -->
 	</div>
 </template>
+<style scoped>
+.input {
+	font-size: 1rem;
+}
+</style>
