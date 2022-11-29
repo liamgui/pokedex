@@ -36,20 +36,27 @@ function toggleView() {
 </script>
 <template>
 	<div class="filters">
-		<div class="start">
-			<Dropdown :options="types" title="Types" @change="setFilter($event, 'type')"></Dropdown>
-			<SearchBar :text="searchText"></SearchBar>
-			<button @click="resetAllFilters()">Reset</button>
-		</div>
+		<h1>Pokedex</h1>
 		<div class="end">
-			<button class="favorite-view icon-button" :class="{favorites: filtersRef.isFavorite}" @click="toggleFavoriteView()">
-				<HeartGrayStackSVG v-if="!filtersRef.isFavorite"></HeartGrayStackSVG>
-				<HeartRedStackSVG v-if="filtersRef.isFavorite"></HeartRedStackSVG>
-			</button>
-			<button class="view icon-button" @click="toggleView()">
-				<ListSVG v-if="viewType === 'list'"></ListSVG>
-				<GridSVG v-if="viewType === 'grid'"></GridSVG>
-			</button>
+			<div class="searchbar-dropdown">
+				<SearchBar class="search" :text="searchText"></SearchBar>
+				<Dropdown
+					class="types"
+					:options="types"
+					title="Types"
+					@change="setFilter($event, 'type')"></Dropdown>
+				<!-- <button @click="resetAllFilters()">Reset</button> -->
+			</div>
+			<div class="favorites-view">
+				<button class="favorite-view icon-button" :class="{favorites: filtersRef.isFavorite}" @click="toggleFavoriteView()">
+					<HeartGrayStackSVG v-if="!filtersRef.isFavorite"></HeartGrayStackSVG>
+					<HeartRedStackSVG v-if="filtersRef.isFavorite"></HeartRedStackSVG>
+				</button>
+				<button class="view icon-button" @click="toggleView()">
+					<ListSVG v-if="viewType === 'grid'"></ListSVG>
+					<GridSVG v-if="viewType === 'list'"></GridSVG>
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -58,13 +65,26 @@ function toggleView() {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		background: white;
-		padding: 1rem;
+		background: var(--light-gray);;
+		padding: 0.5rem 2rem;
 	}
-	.start,
 	.end {
 		display: flex;
 		align-items: center;
+		
+	}
+	.searchbar-dropdown {
+		display: flex;
+		align-items: center;
+		margin-right: 1rem;
+		margin-left: 1rem;
+	}
+	.favorites-view {
+		display: flex;
+	}
+	.search {
+		margin-right: 1rem;
+		width: 360px;
 	}
 	.icon-button {
 		background: transparent;
@@ -88,6 +108,37 @@ function toggleView() {
 	}
 	.view {
 		margin-left: 1rem;
+	}
+	@media screen and (max-width: 800px) {
+		.filters {
+			align-items: flex-start;
+		}
+		.searchbar-dropdown {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+		.favorites-view {
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+		}
+		.view {
+			margin: 0;
+			margin-top: 0.75rem;
+		}
+		.search {
+			width: 100%;
+		}
+	}
+	@media screen and (max-width: 500px) {
+		.filters {
+			flex-direction: column;
+		}
+		h1 {
+			/* width: 100%; */
+			margin-left: 1rem;
+			text-align: center;
+		}
 	}
 
 </style>
