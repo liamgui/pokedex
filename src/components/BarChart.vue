@@ -16,6 +16,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const barColors = ["#9694ff", "#68b998"];
+const barColorsGray = ["#cccccc", "#cccccc"];
 const chartData = computed(() => {
 	return {
 		labels: props.labels,
@@ -30,7 +31,24 @@ const chartData = computed(() => {
 			borderWidth: 0,
 			borderRadius: 10,
 			borderSkipped: false
-		}]
+		},
+		{
+			data: [5000, 5000],
+			backgroundColor: barColorsGray,
+			barThickness: 10,
+			grouped: true,
+			minBarLength: 100,
+			max: 5000,
+			// inflateAmount: 10,
+			borderWidth: 0,
+			borderRadius: 10,
+			borderSkipped: false,
+			datalabels: {
+				display: false
+			},
+			
+		},
+		]
 	};
 });
 
@@ -39,13 +57,14 @@ const chartOptions: ComputedRef<ChartOptions> = computed(() => {
 		indexAxis: "y",
 		responsive: true,
 		maintainAspectRatio: false,
+		events: [],
 		plugins: {
 			legend: {
 				display: false
 			},
 			datalabels: {
 				display: true,
-				align: "end",
+				align: "top",
 				anchor: "end",
 				labels: {
 					title: {
@@ -61,12 +80,19 @@ const chartOptions: ComputedRef<ChartOptions> = computed(() => {
 				display: false,
 				max: 5000
 			},
-			y: {
-				grid: {
-					borderWidth: 0,
-					display: false
-				}
-			}
+			y: 
+				{
+					stacked: true,
+					gridLines: {
+						display: false,
+						tickMarkLength: 0
+					},
+					grid: {
+						borderWidth: 0,
+						display: false
+					}
+				},
+
 		}
 	};
 });
