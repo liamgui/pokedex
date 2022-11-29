@@ -2,9 +2,7 @@
 import { computed, ref } from "vue";
 import { useFavorites } from "~/composables/useFavorites";
 import { Pokemon } from "~/types";
-import HeartGraySVG from "~/assets/svgs/heart-gray.svg?component";
-import HeartRedSVG from "~/assets/svgs/heart-red.svg?component";
-import Audio from "~/components/Audio.vue";
+import FavoriteButton from "./FavoriteButton.vue";
 import { useViewStore } from "~/stores/useViewStore";
 import PokemonTypes from "~/components/PokemonTypes.vue";
 
@@ -12,15 +10,13 @@ interface Props {
 	pokemon: Pokemon,
 	displayTypes?: boolean,
 	displayFavorite?: boolean,
+	viewType?: string,
 }
 const props = withDefaults(defineProps<Props>(), {
 	displayTypes: true,
 	displayFavorite: true,
+	viewType: "grid"
 });
-
-// favorites composable
-const { toggleFavorite } = useFavorites();
-
 
 const to = computed(() => {
 	return props.pokemon?.name?.replace(" ", "_") || "";
@@ -29,23 +25,20 @@ const to = computed(() => {
 </script>
 <template>
 	<router-link :to="to">
-		<div class="pokemon">
+		<div class="pokemon" :class="viewType">
 			<div class="image-container top">
 				<img v-if="pokemon.image" :src="pokemon.image" />
 			</div>
 			<div class="bottom-bar">
-				<div class="title-type">
+				<div class="title-favorite">
 					<h2>{{ pokemon.name }}</h2>
-					<div v-if="displayTypes">
-						<PokemonTypes :types="pokemon.types" :hover="true"></PokemonTypes>
+					<div v-if="displayFavorite">
+						<FavoriteButton :pokemon="pokemon"></FavoriteButton>
 					</div>
 				</div>
-				<button v-if="displayFavorite" class="heart-button" @click.prevent="toggleFavorite(pokemon)">
-					<HeartGraySVG class="empty" />
-					<transition name="heart">
-						<HeartRedSVG v-if="pokemon.isFavorite" class="filled" />
-					</transition>
-				</button>
+				<div v-if="displayTypes">
+					<PokemonTypes :types="pokemon.types" :hover="true"></PokemonTypes>
+				</div>
 			</div>
 		</div>
 	</router-link>
@@ -72,6 +65,38 @@ const to = computed(() => {
 	}
 }
 
+.pokemon.list {
+	--listing-height: 100px;
+	margin-bottom: 0.5rem;
+	flex-direction: row;
+	&:hover {
+		transform: none;
+		background: rgba(255, 255, 255, 0.7)
+	}
+	& a {
+		width: 100px;
+	}
+	& .image-container {
+		width: 120px;
+		flex: initial;
+
+	}
+	& img {
+		max-height: 100px;
+		object-fit: contain;
+		padding: 0.5rem;
+	}
+	& .bottom-bar {
+		flex: 1 1 auto;
+	}
+}
+
+.title-favorite {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
+}
 
 .image-container {
 	flex: 1 1 auto;
@@ -93,33 +118,16 @@ h2 {
 	color: var(--black);
 	text-align: left;
 	margin: 0;
-	margin-bottom: 1rem;
+	/* margin-bottom: 1rem; */
 }
 
 
 .bottom-bar {
-	display: flex;
+	/* display: flex; */
 	align-items: flex-start;
 	justify-content: space-between;
 	padding: 1rem;
 	background: var(--light-gray);
-}
-
-.heart-button {
-	background: transparent;
-	border: none;
-	position: relative;
-    height: 25px;
-	& svg {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-	}
-	&:focus {
-		outline: none;
-	}
 }
 
 </style>
