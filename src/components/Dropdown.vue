@@ -24,15 +24,16 @@ const emits = defineEmits<{
 <template>
 	<el-select
 		v-model="value"
-		class="m-2"
+		class="dropdown"
 		:placeholder="title"
 		size="large"
+		clearable
 		@change="handleCommand"
 	>
-		<el-option value="" />
 		<el-option
 			v-for="item in options"
 			:key="item"
+			class="option"
 			:label="item"
 			:value="item.toLowerCase()"
 		/>
@@ -40,14 +41,11 @@ const emits = defineEmits<{
 </template>
 
 <style scoped>
-.example-showcase .el-dropdown + .el-dropdown {
-  margin-left: 15px;
+.dropdown:deep() .el-input {
+	font-size: 1rem;
 }
-.example-showcase .el-dropdown-link {
-  cursor: pointer;
-  color: var(--el-color-primary);
-  display: flex;
-  align-items: center;
+.option {
+	font-size: 1rem;
 }
 </style>
   
