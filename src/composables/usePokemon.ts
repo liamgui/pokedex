@@ -12,7 +12,7 @@ export function usePokemonQuery() {
 	const search: Ref<string> = ref("");
 	// const count: Ref<number> = ref(0);
 
-	const { query, loading, error, result, fetchMore, refetch, onResult } = useQuery(pokemonsQuery, (): PokemonQueryInput => ({
+	const { query, loading, error, result, fetchMore, refetch, onResult, onError } = useQuery(pokemonsQuery, () => ({
 		limit: limit.value,
 		offset: offset.value,
 		filter: filter.value,
@@ -27,9 +27,9 @@ export function usePokemonQuery() {
 		return result.value?.pokemons.count || 0;
 	});
 
-	const loadMore = () => {
+	const loadMore = async () => {
 		offset.value += limit.value;
-		fetchMore({
+		await fetchMore({
 			variables: {
 				limit: limit.value,
 				offset: offset.value,
