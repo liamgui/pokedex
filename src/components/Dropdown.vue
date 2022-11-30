@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
 	options: string[],
 	title: string
-}>();
+	defaultValue?: string | null;
+}>(),
+{
+	defaultValue: null
+});
 
 const value = ref("");
 
@@ -17,6 +21,11 @@ const changeEmitName = "change";
 const emits = defineEmits<{
 	(e: typeof changeEmitName, value: string | number): void
 }>();
+
+onMounted(() => {
+	value.value = props.defaultValue || "";
+});
+
 </script>
 
 <template>
