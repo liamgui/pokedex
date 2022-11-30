@@ -28,7 +28,7 @@ const to = computed(() => {
 	<router-link :to="to">
 		<div class="pokemon" :class="viewType">
 			<div class="image-container top">
-				<img v-if="pokemon.image" :src="pokemon.image" />
+				<img v-if="pokemon.image" :src="pokemon.image" :alt="pokemon.name" />
 			</div>
 			<div class="bottom-bar">
 				<div class="title-favorite">

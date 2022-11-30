@@ -14,7 +14,11 @@ const { toggleFavorite } = useFavorites();
 
 </script>
 <template>
-	<button class="heart-button favorite" :class="{isFavorite: pokemon.isFavorite}" @click.prevent="toggleFavorite(pokemon)">
+	<button
+		title="Click to add pokemon to favorites."
+		class="heart-button favorite"
+		:class="{isFavorite: pokemon.isFavorite}"
+		@click.prevent="toggleFavorite(pokemon)">
 		<HeartGraySVG class="empty" />
 		<transition name="heart">
 			<HeartRedSVG v-if="pokemon.isFavorite" class="filled" />

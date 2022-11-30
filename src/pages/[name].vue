@@ -58,7 +58,7 @@ watch(
 			<div class="top">
 				<div v-if="pokemon.image" class="pokemon-image">
 					<div class="image-container">
-						<img :src="pokemon?.image" />
+						<img :src="pokemon?.image" :alt="pokemon.name" />
 						<div class="height">
 							Height: {{ pokemon?.height.minimum }} - {{ pokemon?.height.maximum }}
 						</div>

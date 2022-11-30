@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a simple pokedex app that uses the a graphQL API to fetch data and perform viewing, favoriting and filtering.
+This is a simple pokedex app prototype that uses a graphQL API to fetch data and perform viewing, favoriting and filtering.
 
 
 ## Installation
@@ -82,9 +82,27 @@ Why: Bar Chart for Pokemon Stats
 
 ## Testing:
 
+I used Vitest to write some unit tests for several of the smaller components and stores. I also implemented Cypress to write some end to end tests for the app.
+
+
 - Vitest (Unit Testing)
 - Cypress (E2E Testing)
 	- npm run cypress:open
 
-I added a few brief tests for Cypress. These just check some of the functionality of the app's index page. Through testing with Cypress, I did notice that there were several audio clips that respond with a 404 error. I commented out the test that checks for the audio clips as it only applied to an early iteration where the audio clips were on the index page.
+I added a few brief tests for Cypress. These just check some of the functionality of the app's index page. Through testing with Cypress, I did notice that there were several audio clips that responded with a 404 error. I commented out the test that checks for the audio clips as it only applied to an early iteration where the audio clips were on the index page.
 Ex. Mr. Mime, Farfetch'd
+
+## New Technologies To Me
+
+- Testing (and by extension Vitest and Cypress testing) was one thing I had to learn for this exercise. Overall, I think there is a lot of room for improvement with testing and I recognize the importance of it.
+
+- I have never worked with Element Plus and Vue Apollo (Composables) before. I had to learn how to use them and how to integrate them into the project. I have used Apollo and GraphQL in other projects with Angular, so I was familiar with the concepts, but not this specific implementation.
+
+
+## Future Improvements
+
+- Add more tests
+- Componentize the Pokemon Details page
+- Add weaknesses to api and add to filtering
+- Unify color of types from pokemon items and the filter dropdown
+- Style Height and Weight with icons/animations

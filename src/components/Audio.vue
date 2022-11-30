@@ -13,7 +13,7 @@ const audio = ref<HTMLAudioElement | null>(null);
 
 <template>
 	<audio ref="audio" :src="soundSrc"></audio>
-	<button @click="audio?.play()">
+	<button title="Pokemon Sound" @click="audio?.play()">
 		<SoundSVG></SoundSVG>
 	</button>
 </template>

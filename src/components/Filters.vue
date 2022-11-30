@@ -18,14 +18,6 @@ const { filters: filtersRef } = storeToRefs(useFilterStore());
 const { setViewType } = useViewStore();
 const { viewType } = storeToRefs(useViewStore());
 
-function resetAllFilters() {
-	setFilter(null, "isFavorite");
-	updateSearch("");
-	setFilter("", "type");
-	setViewType("grid");
-	searchText.value = "";
-}
-
 const searchText = ref("");
 
 function toggleView() {
@@ -45,14 +37,17 @@ function toggleView() {
 					:options="types"
 					title="Types"
 					@change="setFilter($event, 'type')"></Dropdown>
-				<!-- <button @click="resetAllFilters()">Reset</button> -->
 			</div>
 			<div class="favorites-view">
-				<button class="favorite-view icon-button" :class="{favorites: filtersRef.isFavorite}" @click="toggleFavoriteView()">
+				<button
+					title="toggle favorites view"
+					class="favorite-view icon-button"
+					:class="{favorites: filtersRef.isFavorite}"
+					@click="toggleFavoriteView()">
 					<HeartGrayStackSVG v-if="!filtersRef.isFavorite"></HeartGrayStackSVG>
 					<HeartRedStackSVG v-if="filtersRef.isFavorite"></HeartRedStackSVG>
 				</button>
-				<button class="view icon-button" @click="toggleView()">
+				<button :title="'toggle ' + viewType + ' view'" class="view icon-button" @click="toggleView()">
 					<ListSVG v-if="viewType === 'grid'"></ListSVG>
 					<GridSVG v-if="viewType === 'list'"></GridSVG>
 				</button>
