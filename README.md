@@ -35,7 +35,7 @@ This is a simple pokedex app that uses the a graphQL API to fetch data and perfo
 
 ### Vue 3
 
-- Why Vue 3? 
+- Why Vue 3?
 	- Composition API - makes it easier to write reusable functional code
 	- Better TypeScript Support (over Vue 2)
 	- Better Performance (over Vue 2)
@@ -49,7 +49,7 @@ This is a simple pokedex app that uses the a graphQL API to fetch data and perfo
 - Font Loader
 
 Why: Vite is a new build tool that significantly improves the frontend development experience. It offers features such as hot module replacement, faster builds, and a leaner dev server. It also has a plugin system that allows you to easily add features to your project. Easier to configure than webpack. It sped up my workflow and allowed me to quickly prototype.
-	
+
 ### TypeScript
 
 Why: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. It is a great tool for writing large scale applications. It allows you to write code that is easier to maintain, refactor, read, and debug.
@@ -68,7 +68,7 @@ Why: Pinia is a state management library for Vue.js. It is a great alternative t
 
 Why: GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. It provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools. Apollo's in memory cache makes it easy to cache data and update the UI when the data changes. (extensively used for favoriting and infinite scroll)-
 
-Used for 
+Used for
 ### PostCSS
 
 Why: Didn't need anything fancy, but wanted to have a few plugins to help with development (nesting and comments). VIte is preconfigured to use PostCSS, so it's easy to use plugins and virtually no configuration.
@@ -84,5 +84,11 @@ Why: Bar Chart for Pokemon Stats
 ## Testing:
 
 - Vitest (Unit Testing)
+
+s
+
 - Cypress (E2E Testing)
 	- npm run cypress:open
+
+I added a few brief tests for Cypress. These just check some of the functionality of the app's index page. Through testing with Cypress, I did notice that there were several audio clips that respond with a 404 error. I commented out the test that checks for the audio clips as it only applied to an early iteration where the audio clips were on the index page.
+Ex. Mr. Mime, Farfetch'd
