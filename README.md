@@ -68,7 +68,6 @@ Why: Pinia is a state management library for Vue.js. It is a great alternative t
 
 Why: GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. It provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools. Apollo's in memory cache makes it easy to cache data and update the UI when the data changes. (extensively used for favoriting and infinite scroll)-
 
-Used for
 ### PostCSS
 
 Why: Didn't need anything fancy, but wanted to have a few plugins to help with development (nesting and comments). VIte is preconfigured to use PostCSS, so it's easy to use plugins and virtually no configuration.
