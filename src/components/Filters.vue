@@ -18,14 +18,6 @@ const { filters: filtersRef } = storeToRefs(useFilterStore());
 const { setViewType } = useViewStore();
 const { viewType } = storeToRefs(useViewStore());
 
-function resetAllFilters() {
-	setFilter(null, "isFavorite");
-	updateSearch("");
-	setFilter("", "type");
-	setViewType("grid");
-	searchText.value = "";
-}
-
 const searchText = ref("");
 
 function toggleView() {
