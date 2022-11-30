@@ -1,0 +1,139 @@
+<script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { ref } from "vue";
+import Dropdown from "~/components/Dropdown.vue";
+import SearchBar from "~/components/SearchBar.vue";
+import { usePokemonTypesQuery } from "~/composables/usePokemon";
+import { useFilterStore } from "~/stores/useFilterStore";
+import { useViewStore } from "~/stores/useViewStore";
+import HeartGrayStackSVG from "~/assets/svgs/heart-gray-stacked.svg?component";
+import HeartRedStackSVG from "~/assets/svgs/heart-red-stacked.svg?component";
+import ListSVG from "~/assets/svgs/list.svg?component";
+import GridSVG from "~/assets/svgs/grid.svg?component";
+// pokemon types query
+const { types, loading: pokemonTypesLoading, error: pokemonTypesError } = usePokemonTypesQuery();
+
+const { setFilter, updateSearch, toggleFavoriteView } = useFilterStore();
+const { filters: filtersRef } = storeToRefs(useFilterStore());
+const { setViewType } = useViewStore();
+const { viewType } = storeToRefs(useViewStore());
+
+const searchText = ref("");
+
+function toggleView() {
+	const value = viewType.value === "grid" ? "list" : "grid";
+	setViewType(value);
+}
+
+</script>
+<template>
+	<div class="filters">
+		<h1>Pokedex</h1>
+		<div class="end">
+			<div class="searchbar-dropdown">
+				<SearchBar class="search" :text="searchText"></SearchBar>
+				<Dropdown
+					class="types"
+					:options="types"
+					title="Types"
+					@change="setFilter($event, 'type')"></Dropdown>
+			</div>
+			<div class="favorites-view">
+				<button
+					title="toggle favorites view"
+					class="favorite-view icon-button"
+					:class="{favorites: filtersRef.isFavorite}"
+					@click="toggleFavoriteView()">
+					<HeartGrayStackSVG v-if="!filtersRef.isFavorite"></HeartGrayStackSVG>
+					<HeartRedStackSVG v-if="filtersRef.isFavorite"></HeartRedStackSVG>
+				</button>
+				<button :title="'toggle ' + viewType + ' view'" class="view icon-button" @click="toggleView()">
+					<ListSVG v-if="viewType === 'grid'"></ListSVG>
+					<GridSVG v-if="viewType === 'list'"></GridSVG>
+				</button>
+			</div>
+		</div>
+	</div>
+</template>
+<style scoped>
+	.filters {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background: var(--light-gray);;
+		padding: 0.5rem 2rem;
+	}
+	.end {
+		display: flex;
+		align-items: center;
+		
+	}
+	.searchbar-dropdown {
+		display: flex;
+		align-items: center;
+		margin-right: 1rem;
+		margin-left: 1rem;
+	}
+	.favorites-view {
+		display: flex;
+	}
+	.search {
+		margin-right: 1rem;
+		width: 360px;
+	}
+	.icon-button {
+		background: transparent;
+		border: none;
+		position: relative;
+		height: 25px;
+		&:focus {
+			outline: none;
+		}
+		& svg {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+		}
+	}
+	button {
+		border-radius: 0;
+	}
+	.view {
+		margin-left: 1rem;
+	}
+	@media screen and (max-width: 800px) {
+		.filters {
+			align-items: flex-start;
+		}
+		.searchbar-dropdown {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+		.favorites-view {
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+		}
+		.view {
+			margin: 0;
+			margin-top: 0.75rem;
+		}
+		.search {
+			width: 100%;
+		}
+	}
+	@media screen and (max-width: 500px) {
+		.filters {
+			flex-direction: column;
+		}
+		h1 {
+			/* width: 100%; */
+			margin-left: 1rem;
+			text-align: center;
+		}
+	}
+
+</style>
