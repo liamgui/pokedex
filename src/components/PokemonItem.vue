@@ -3,18 +3,21 @@ import { computed } from "vue";
 import { Pokemon } from "~/types";
 import FavoriteButton from "./FavoriteButton.vue";
 import PokemonTypes from "~/components/PokemonTypes.vue";
+import { useViewStore } from "~/stores/useViewStore";
+import { storeToRefs } from "pinia";
 
 interface Props {
 	pokemon: Pokemon,
 	displayTypes?: boolean,
 	displayFavorite?: boolean,
-	viewType?: string,
 }
 const props = withDefaults(defineProps<Props>(), {
 	displayTypes: true,
 	displayFavorite: true,
-	viewType: "grid"
 });
+
+const { viewType } = storeToRefs(useViewStore());
+
 
 const to = computed(() => {
 	return props.pokemon?.name?.replace(" ", "_") || "";

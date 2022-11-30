@@ -1,26 +1,27 @@
 <script setup lang="ts">
 //composables
-import { useViewStore } from "~/stores/useViewStore";
 //pokemonitem
 import PokemonItem from "~/components/PokemonItem.vue";
 //filters for favorites
 import { storeToRefs } from "pinia";
+import { useViewStore } from "~/stores/useViewStore";
 import { Pokemon } from "~/types";
 
 type Props = {
-  pokemons: Pokemon[];
-  displayTypes?: boolean;
-  displayFavorite?: boolean;
-  viewType?: string;
+	pokemons: Pokemon[];
+	displayTypes?: boolean;
+	displayFavorite?: boolean;
 };
+
 const props = withDefaults(
 	defineProps<Props>(),
 	{
 		displayTypes: true,
-		displayFavorite: true,
-		viewType: "grid"
+		displayFavorite: true
 	}
 );
+
+const { viewType } = storeToRefs(useViewStore());
 
 const typesClass = (type: string | string[]) => {
 	if (!props.displayTypes) return "";
