@@ -84,9 +84,6 @@ Why: Bar Chart for Pokemon Stats
 ## Testing:
 
 - Vitest (Unit Testing)
-
-s
-
 - Cypress (E2E Testing)
 	- npm run cypress:open
 
