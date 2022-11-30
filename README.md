@@ -82,6 +82,8 @@ Why: Bar Chart for Pokemon Stats
 
 ## Testing:
 
+I used Vitest to write some unit tests for several of the smaller components and stores. I also implemented used Cypress to write some end to end tests for the app.
+
 - Vitest (Unit Testing)
 - Cypress (E2E Testing)
 	- npm run cypress:open
