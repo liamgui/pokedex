@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Dropdown from "~/components/Dropdown.vue";
 import SearchBar from "~/components/SearchBar.vue";
 import { usePokemonTypesQuery } from "~/composables/usePokemon";
-import { useFilterStore } from "~/stores/useFilterStore";
+import { useFilterStore, Filters } from "~/stores/useFilterStore";
 import { useViewStore } from "~/stores/useViewStore";
 import HeartGrayStackSVG from "~/assets/svgs/heart-gray-stacked.svg?component";
 import HeartRedStackSVG from "~/assets/svgs/heart-red-stacked.svg?component";
@@ -14,11 +14,11 @@ import GridSVG from "~/assets/svgs/grid.svg?component";
 const { types, loading: pokemonTypesLoading, error: pokemonTypesError } = usePokemonTypesQuery();
 
 const { setFilter, updateSearch, toggleFavoriteView } = useFilterStore();
+const { search, filters } = storeToRefs(useFilterStore());
 const { filters: filtersRef } = storeToRefs(useFilterStore());
 const { setViewType } = useViewStore();
 const { viewType } = storeToRefs(useViewStore());
 
-const searchText = ref("");
 
 function toggleView() {
 	const value = viewType.value === "grid" ? "list" : "grid";
@@ -34,11 +34,12 @@ function toggleView() {
 		</div>
 		<div class="end">
 			<div class="searchbar-dropdown">
-				<SearchBar class="search" :text="searchText"></SearchBar>
+				<SearchBar class="search"></SearchBar>
 				<Dropdown
 					class="types"
 					:options="types"
 					title="Types"
+					:default-value="(filters.type as typeof Filters)"
 					@change="setFilter($event, 'type')"></Dropdown>
 			</div>
 			<div class="favorites-view">

@@ -5,7 +5,7 @@ import { Ref, ref } from "vue";
 export type Filters = {
 	// [key: string]: string;
 	isFavorite: boolean;
-	type: string;
+	type: string | null;
 }
 
 export const useFilterStore = defineStore(
