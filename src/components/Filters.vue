@@ -30,7 +30,7 @@ function toggleView() {
 	<div class="filters">
 		<div class="start">
 			<h1>Pokedex</h1>
-			<a target="_blank" href="https://github.com/liamgui/pokedex"><img class="github-icon" src="src/assets/pngs/GitHub-Mark-64px.png" alt="github icon"></a>
+			<a target="_blank" href="https://github.com/liamgui/pokedex"><img class="github-icon" src="@/assets/pngs/GitHub-Mark-64px.png" alt="github icon"></a>
 		</div>
 		<div class="end">
 			<div class="searchbar-dropdown">
