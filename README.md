@@ -1,42 +1,88 @@
-# Vue 3 + TypeScript + Vite
+# Pokedex
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Description
 
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
-
-## Type Support For `.vue` Imports in TS
-
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
-
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
-
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+This is a simple pokedex app that uses the a graphQL API to fetch data and perform viewing, favoriting and filtering.
 
 
+## Installation
 
-Apollo Query Composables
+1. Clone the repo
+2. Run `npm install` to install dependencies
+3. Run `npm start` to start the app
 
+## User Stories
 
+- [x] User can view a list of all pokemon
+- [x] User can view a grid of all pokemon
+- [x] User can view the details of a pokemon including evolutions
+- [x] User can favorite a pokemon
+- [x] User can filter pokemon by name with a search bar
+- [x] User can filter pokemon by type with a dropdown
+- [x] User can filter pokemon by favorited
+- [x] User can view more pokemon when scrolling to the bottom of the list
 
+## Usage
 
+1. Click on the pokemon to view more details
+2. Click on the heart icon to favorite a pokemon
+3. Click on the types dropdown to filter by type
+4. Click on the favorites icon at the top right (stacked hearts icon) to filter by favorites
+5. Type in the search bar to filter by name
+6. Click on the list/grid button at the top right to toggle between list and grid view
 
-Tech Stack:
- - Vue 3
- - Vite
-	- Vite Pages
-	- Font Loader
- - TypeScript
- - Vue Router
- - Pinia
- - Vue Apollo
- - PostCSS
- - EsLint
- - Element Plus (UI Library)
+## Tech Stack:
 
-Testing:
- - Vitest (Unit Testing)
- - Cypress (E2E Testing)
+### Vue 3
+
+- Why Vue 3? 
+	- Composition API - makes it easier to write reusable functional code
+	- Better TypeScript Support (over Vue 2)
+	- Better Performance (over Vue 2)
+	- Better Developer Experience (over Vue 2)
+	- Better Tooling (over Vue 2)
+	- Smaller Bundle Size (over Vue 2)
+
+### Vite
+
+- Vite Pages
+- Font Loader
+
+Why: Vite is a new build tool that significantly improves the frontend development experience. It offers features such as hot module replacement, faster builds, and a leaner dev server. It also has a plugin system that allows you to easily add features to your project. Easier to configure than webpack. It sped up my workflow and allowed me to quickly prototype.
+	
+### TypeScript
+
+Why: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. It is a great tool for writing large scale applications. It allows you to write code that is easier to maintain, refactor, read, and debug.
+
+### Vue Router
+
+Why: Vue Router is the official router for Vue.js. It allows you to easily create single page applications.
+
+### Pinia
+
+Why: Pinia is a state management library for Vue.js. It is a great alternative to Vuex. It is smaller, simpler, and easier to use. Used it for the filter states and view states to let components communicate with each other without having to rely on emitting events and passing them up and down the chain.
+
+### Vue Apollo (Composables)
+
+- GraphQL
+
+Why: GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. It provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools. Apollo's in memory cache makes it easy to cache data and update the UI when the data changes. (extensively used for favoriting and infinite scroll)-
+
+Used for 
+### PostCSS
+
+Why: Didn't need anything fancy, but wanted to have a few plugins to help with development (nesting and comments). VIte is preconfigured to use PostCSS, so it's easy to use plugins and virtually no configuration.
+
+### Element Plus (UI Library)
+
+Why: Infinite Scroll, TextInput, Select components and functionality - Not many component libraries that work with Vue 3 yet. Element Plus is a great alternative to Vuetify. It is smaller, simpler, and easier to use.
+
+### Chart.js (vue chart.js)
+
+Why: Bar Chart for Pokemon Stats
+
+## Testing:
+
+- Vitest (Unit Testing)
+- Cypress (E2E Testing)
 	- npm run cypress:open
