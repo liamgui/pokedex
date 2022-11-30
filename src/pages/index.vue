@@ -58,6 +58,9 @@ const filteredPokemons = computed(() => {
 				<div v-if="filteredPokemons && filteredPokemons.length">
 					<PokemonList :pokemons="filteredPokemons" :view-type="viewTypeRef"></PokemonList>
 				</div>
+				<div v-else>
+					<p>No Pokemon Matches</p>
+				</div>
 			</div>
 		</div>
 		<div v-if="pokemonsError" class="error">
