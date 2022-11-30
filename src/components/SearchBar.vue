@@ -27,7 +27,7 @@ watch(
 		<el-input
 			v-model="searchText"
 			clearable
-			class="input"
+			class="input search-bar"
 			size="large"
 			type="text"
 			placeholder="Search"
