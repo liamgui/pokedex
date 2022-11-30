@@ -23,6 +23,7 @@ useHead({
 });
 
 const { pokemons, loading: pokemonsLoading, error: pokemonsError, loadMore, count } = usePokemonQuery();
+
 const { viewType: viewTypeRef } = storeToRefs(useViewStore());
 
 const loadingMore = ref(false);
