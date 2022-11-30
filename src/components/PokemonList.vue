@@ -6,7 +6,6 @@ import PokemonItem from "~/components/PokemonItem.vue";
 //filters for favorites
 import { storeToRefs } from "pinia";
 import { Pokemon } from "~/types";
-import { onMounted } from "vue";
 
 type Props = {
   pokemons: Pokemon[];

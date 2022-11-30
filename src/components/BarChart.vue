@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed, ComputedRef, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, ComputedRef } from "vue";
 import { Bar } from "vue-chartjs";
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ChartOptions, LinearScaleOptions, ScaleOptions } from "chart.js";
-// import "chart.js/auto";
-// import { ChartOptions } from "chart.js";
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ChartOptions } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
 
@@ -51,8 +49,8 @@ const chartData = computed(() => {
 		]
 	};
 });
-
-const chartOptions: ComputedRef<ChartOptions> = computed(() => {
+//modified base chartoptions to add scales - vue plugin didn't support scales in options
+const chartOptions: ComputedRef<{scales: any} & ChartOptions> = computed(() => {
 	return {
 		indexAxis: "y",
 		responsive: true,

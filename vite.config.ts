@@ -13,14 +13,12 @@ export default defineConfig({
 	},
 	plugins: [
 		vue(),
-		Pages(),
+		Pages({
+			importMode: "async",
+		}),
 		VitePluginFonts({
 			google: {
 				families: [
-					{
-						name: "Montserrat",
-						styles: "wght@300;400;700;800;900",
-					},
 					{
 						name: "Fira Sans",
 						styles: "wght@300;400;700;800;900",
@@ -30,4 +28,7 @@ export default defineConfig({
 		}),
 		svgLoader()
 	],
+	build: {
+		sourcemap: false,
+	}
 });

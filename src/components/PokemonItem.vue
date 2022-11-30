@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { useFavorites } from "~/composables/useFavorites";
+import { computed } from "vue";
 import { Pokemon } from "~/types";
 import FavoriteButton from "./FavoriteButton.vue";
-import { useViewStore } from "~/stores/useViewStore";
 import PokemonTypes from "~/components/PokemonTypes.vue";
 
 interface Props {

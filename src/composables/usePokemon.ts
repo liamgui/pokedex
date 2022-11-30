@@ -1,16 +1,15 @@
 import { useQuery } from "@vue/apollo-composable";
-import { pokemonNameQuery, pokemonsQuery, pokemonTypesQuery } from "~/graphql/queries";
-import { computed, ComputedRef, Ref, ref, watch } from "vue";
-import { Pokemon, PokemonFilterInput, PokemonQueryInput } from "~/types";
-import { useFilterStore } from "~/stores/useFilterStore";
+import { computed, ComputedRef, Ref, ref } from "vue";
 import { storeToRefs } from "pinia";
+import { pokemonNameQuery, pokemonsQuery, pokemonTypesQuery } from "~/graphql/queries";
+import { Pokemon, PokemonFilterInput } from "~/types";
+import { useFilterStore } from "~/stores/useFilterStore";
 
 export function usePokemonQuery() {
 	const limit: Ref<number> = ref(20);
 	const offset: Ref<number> = ref(0);
 	const filter: Ref<PokemonFilterInput> = ref({});
 	const search: Ref<string> = ref("");
-	// const count: Ref<number> = ref(0);
 
 	const { query, loading, error, result, fetchMore, refetch, onResult, onError } = useQuery(pokemonsQuery, () => ({
 		limit: limit.value,
@@ -27,6 +26,7 @@ export function usePokemonQuery() {
 		return result.value?.pokemons.count || 0;
 	});
 
+	//load more pokemons for infinite scroll (fetch next 20 pokemons)
 	const loadMore = async () => {
 		offset.value += limit.value;
 		await fetchMore({

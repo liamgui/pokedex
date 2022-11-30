@@ -1,11 +1,6 @@
-<script lang="ts">
-export default {
-	name: "Pokemon"
-};
-</script>
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, watch } from "vue";
 import { usePokemonByNameQuery } from "~/composables/usePokemon";
 import PokemonTypes from "~/components/PokemonTypes.vue";
 import PokemonList from "~/components/PokemonList.vue";

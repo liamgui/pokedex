@@ -55,7 +55,6 @@ const typeLeave = () => {
 .type {
 	width: 100px;
 	border-radius: 5px;
-	/* font-family: Montserrat, sans-serif; */
 	font-size: 0.75rem;
 	font-weight: 700;
 	letter-spacing: 1px;

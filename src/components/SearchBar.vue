@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { ref, watch } from "vue";
-import { useFilterStore, Filters } from "~/stores/useFilterStore";
-import CloseSVG from "~/assets/svgs/close.svg?component";
+import { useFilterStore } from "~/stores/useFilterStore";
+// import CloseSVG from "~/assets/svgs/close.svg?component";
 
 
 const props = defineProps<{

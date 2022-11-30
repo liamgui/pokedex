@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { ArrowDown } from "@element-plus/icons-vue";
-import { emitKeypressEvents } from "readline";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 
 const props = defineProps<{
 	options: string[],
