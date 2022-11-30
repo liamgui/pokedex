@@ -23,6 +23,7 @@ useHead({
 });
 
 const { pokemons, loading: pokemonsLoading, error: pokemonsError, loadMore, count } = usePokemonQuery();
+
 const { viewType: viewTypeRef } = storeToRefs(useViewStore());
 
 const loadingMore = ref(false);
@@ -56,6 +57,9 @@ const filteredPokemons = computed(() => {
 			<div v-infinite-scroll="load" infinite-scroll-distance="20">
 				<div v-if="filteredPokemons && filteredPokemons.length">
 					<PokemonList :pokemons="filteredPokemons" :view-type="viewTypeRef"></PokemonList>
+				</div>
+				<div v-else>
+					<p>No Pokemon Matches</p>
 				</div>
 			</div>
 		</div>
