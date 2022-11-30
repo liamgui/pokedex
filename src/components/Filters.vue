@@ -28,7 +28,10 @@ function toggleView() {
 </script>
 <template>
 	<div class="filters">
-		<h1>Pokedex</h1>
+		<div class="start">
+			<h1>Pokedex</h1>
+			<a target="_blank" href="https://github.com/liamgui/pokedex"><img class="github-icon" src="src/assets/pngs/GitHub-Mark-64px.png" alt="github icon"></a>
+		</div>
 		<div class="end">
 			<div class="searchbar-dropdown">
 				<SearchBar class="search" :text="searchText"></SearchBar>
@@ -56,6 +59,11 @@ function toggleView() {
 	</div>
 </template>
 <style scoped>
+	.github-icon {
+		margin-left: 0.75rem;
+		width: 1.5rem;
+		vertical-align: middle;
+	}
 	.filters {
 		display: flex;
 		align-items: center;
@@ -63,6 +71,8 @@ function toggleView() {
 		background: var(--light-gray);;
 		padding: 0.5rem 2rem;
 	}
+
+	.start,
 	.end {
 		display: flex;
 		align-items: center;
@@ -104,7 +114,7 @@ function toggleView() {
 	.view {
 		margin-left: 1rem;
 	}
-	@media screen and (max-width: 800px) {
+	@media screen and (max-width: 830px) {
 		.filters {
 			align-items: flex-start;
 		}

@@ -61,12 +61,12 @@ const filteredPokemons = computed(() => {
 				<div v-else>
 					<p>No Pokemon Matches</p>
 				</div>
-					<!-- Favicon credits -->
-	<div class="credits">
-		<span class="link">
-			<a href="https://www.flaticon.com/free-icons/pokemon" title="pokemon favicon">Pokemon favicon created by Nikita Golubev - Flaticon</a>
-		</span>
-	</div>
+				<!-- Favicon credits -->
+				<div class="credits">
+					<span class="link">
+						<a href="https://www.flaticon.com/free-icons/pokemon" title="pokemon favicon">Pokemon favicon created by Nikita Golubev - Flaticon</a>
+					</span>
+				</div>
 			</div>
 		</div>
 		<div v-if="pokemonsError" class="error">
@@ -75,7 +75,6 @@ const filteredPokemons = computed(() => {
 		<div v-if="pokemonsLoading || loadingMore" class="loading" :class="{more: loadingMore}">
 			<Loader></Loader>
 		</div>
-		
 	</div>
 </template>
 
