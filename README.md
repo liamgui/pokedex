@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a simple pokedex app that uses a graphQL API to fetch data and perform viewing, favoriting and filtering.
+This is a simple pokedex app prototype that uses a graphQL API to fetch data and perform viewing, favoriting and filtering.
 
 
 ## Installation
@@ -103,3 +103,6 @@ Ex. Mr. Mime, Farfetch'd
 
 - Add more tests
 - Componentize the Pokemon Details page
+- Add weaknesses to api and add to filtering
+- Unify color of types from pokemon items and the filter dropdown
+- Style Height and Weight with icons/animations
