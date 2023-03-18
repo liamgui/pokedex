@@ -10,7 +10,7 @@ import FavoriteButton from "~/components/FavoriteButton.vue";
 import Audio from "~/components/Audio.vue";
 import ChevronSVG from "~/assets/svgs/chevron.svg?component";
 
-import { Pokemon } from "~/types";
+import { Pokemon } from "~/graphql/types";
 import { useRoute } from "vue-router";
 
 const props = defineProps<{
@@ -31,8 +31,8 @@ useHead({
 
 const evolutions = computed(() => {
 	if (!pokemon.value) return [];
-	const previousEvolutions: Pokemon[] = pokemon.value.previousEvolutions || [];
-	const nextEvolutions: Pokemon[] = pokemon.value.evolutions || [];
+	const previousEvolutions: readonly Pokemon[] = pokemon.value.previousEvolutions || [];
+	const nextEvolutions: readonly Pokemon[] = pokemon.value.evolutions || [];
 	return [...previousEvolutions, pokemon.value, ...nextEvolutions].sort((a,b) => a.id.localeCompare(b.id));
 });
 

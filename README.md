@@ -106,3 +106,5 @@ Ex. Mr. Mime, Farfetch'd
 - Add weaknesses to api and add to filtering
 - Unify color of types from pokemon items and the filter dropdown
 - Style Height and Weight with icons/animations
+- Debounce search input
+- Cleanup composables to be reused across app

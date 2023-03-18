@@ -2,7 +2,7 @@
 import HeartGraySVG from "~/assets/svgs/heart-gray.svg?component";
 import HeartRedSVG from "~/assets/svgs/heart-red.svg?component";
 import { useFavorites } from "~/composables/useFavorites";
-import { Pokemon } from "~/types";
+import { Pokemon } from "~/graphql/types";
 
 type Props = {
 	pokemon: Pokemon;

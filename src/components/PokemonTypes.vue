@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useViewStore } from "~/stores/useViewStore";
 
 type Props = {
-	types: string[];
+	types: readonly string[];
 	hover?: boolean;
 };
 
