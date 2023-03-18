@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { Pokemon } from "~/types";
+import { Pokemon } from "~/graphql/types";
 import FavoriteButton from "./FavoriteButton.vue";
 import PokemonTypes from "~/components/PokemonTypes.vue";
 import { useViewStore } from "~/stores/useViewStore";

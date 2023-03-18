@@ -1,7 +1,7 @@
 import { useMutation } from "@vue/apollo-composable";
-import { favoritePokemon as favoriteMutation, unfavoritePokemon as unfavoriteMutation } from "~/graphql/mutations";
+import { favoritePokemon as favoriteMutation, unfavoritePokemon as unfavoriteMutation } from "~/graphql/mutations/mutations";
 import { ref } from "vue";
-import { Pokemon } from "~/types";
+import { Pokemon } from "~/graphql/types";
 
 export function useFavorites() {
 	const pokemonToFavorite = ref("");
