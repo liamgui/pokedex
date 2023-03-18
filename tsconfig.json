@@ -12,6 +12,7 @@
 		"esModuleInterop": true,
 		"lib": ["ESNext", "DOM"],
 		"skipLibCheck": true,
+		"typeRoots": ["node_modules/@types", "src/@types"],
 		"types": ["element-plus/global", "vite/client", "vitest/globals"],
 		"paths": {
 			"~/*": [
@@ -22,6 +23,7 @@
 			]
 		}
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite-env.d.ts", "vite-env.d.ts", "vite-env.d.ts", "src/shims-vue.d.ts"],
+	"files": ["src/@types/graphql.d.ts"],
+	"include": ["src/**/*", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite-env.d.ts", "vite-env.d.ts", "vite-env.d.ts", "src/shims-vue.d.ts"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }

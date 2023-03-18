@@ -5,7 +5,7 @@ import PokemonItem from "~/components/PokemonItem.vue";
 //filters for favorites
 import { storeToRefs } from "pinia";
 import { useViewStore } from "~/stores/useViewStore";
-import { Pokemon } from "~/types";
+import { Pokemon } from "~/graphql/types";
 
 type Props = {
 	pokemons: Pokemon[];
@@ -23,15 +23,15 @@ const props = withDefaults(
 
 const { viewType } = storeToRefs(useViewStore());
 
-const typesClass = (type: string | string[]) => {
+const typesClass = (type: string | readonly string[]) => {
 	if (!props.displayTypes) return "";
-	if (Array.isArray(type)) return type.map((t) => `type-${t.toLowerCase()}`);
+	if (typeof type === "object") return type.map((t) => `type-${t.toLowerCase()}`);
 	return "type-" + type.toLowerCase();
 };
 
 const { selectedPokemonType: selectedPokemonTypeRef } = storeToRefs(useViewStore());
 // function to check if pokemon type is selectedPokemonType
-const isSelectedType = (types: string[], reverse: boolean = false) => {
+const isSelectedType = (types: readonly string[], reverse: boolean = false) => {
 	if (!props.displayTypes || !selectedPokemonTypeRef.value) return false;
 	const result = types.find((type) => type.toLowerCase() === selectedPokemonTypeRef.value);
 	return reverse ? !result : result;
