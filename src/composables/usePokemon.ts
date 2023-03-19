@@ -119,8 +119,7 @@ export function usePokemonQuery({ limit: limitParam = 20, offset: offsetParam = 
 		setFilter,
 		setFilters,
 		toggleFavorites,
-		updateSearch,
-		refetchPokemon
+		updateSearch
 	};
 }
 
