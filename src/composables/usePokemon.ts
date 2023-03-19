@@ -1,15 +1,37 @@
+import { ApolloQueryResult } from "@apollo/client/core";
 import { useQuery } from "@vue/apollo-composable";
 import { computed, ComputedRef, Ref, ref } from "vue";
-import { storeToRefs } from "pinia";
 import { pokemonNameQuery, pokemonsQuery, pokemonTypesQuery } from "~/graphql/queries/queries";
-import { Pokemon, PokemonFilterInput } from "~/graphql/types";
-import { useFilterStore } from "~/stores/useFilterStore";
+import { Pokemon } from "~/types";
+import { debounce } from "~/utils/debounce";
+// import { debounce } from "lodash";
 
-export function usePokemonQuery() {
-	const limit: Ref<number> = ref(20);
-	const offset: Ref<number> = ref(0);
-	const filter: Ref<PokemonFilterInput> = ref({});
-	const search: Ref<string> = ref("");
+import { PokemonFilterInput } from "./../graphql/types.d";
+import { PokemonQueryResult } from "./../types";
+
+
+interface Options {
+	limit?: number;
+	offset?: number;
+	filter?: PokemonFilterInput;
+	search?: string;
+}
+
+
+const limit: Ref<number> = ref(20);
+const offset: Ref<number> = ref(0);
+const filter: Ref<PokemonFilterInput> = ref({});
+const search: Ref<string> = ref("");
+
+const pokemons: Ref<Pokemon[]> = ref([]);
+
+
+export function usePokemonQuery({ limit: limitParam = 20, offset: offsetParam = 0, filter: filterParam = {}, search: searchParam = "" }: Options = {}) {
+
+	limit.value = limitParam;
+	offset.value = offsetParam;
+	filter.value = filterParam;
+	search.value = searchParam;
 
 	const { query, loading, error, result, fetchMore, refetch, onResult, onError } = useQuery(pokemonsQuery, () => ({
 		limit: limit.value,
@@ -18,9 +40,49 @@ export function usePokemonQuery() {
 		search: search.value,
 	}));
 
-	const pokemons: ComputedRef<Pokemon[]> = computed((): Pokemon[] => {
-		return result.value?.pokemons.edges || [];
+	onResult((result: ApolloQueryResult<PokemonQueryResult>) => {
+		pokemons.value = result.data.pokemons.edges || [];
 	});
+
+	function setFilters(filters: PokemonFilterInput) {
+		filter.value = filters;
+		refetchPokemon();
+	}
+
+	function refetchPokemon() {
+		console.log("refetching");
+		offset.value = 0;
+		refetch({
+			limit: limit.value,
+			offset: 0,
+			filter: filter.value,
+			search: search.value,
+		});
+	}
+		
+	function setFilter<K extends keyof PokemonFilterInput>(key: K, value: PokemonFilterInput[K]) {
+		if ( !value ) {
+			delete filter.value[key];
+		} else {
+			filter.value[key] = value;
+		}
+		refetchPokemon();
+	}
+
+
+	function toggleFavorites() {
+		if (!filter.value.isFavorite) {
+			setFilter("isFavorite", true);
+		} else {
+			setFilter("isFavorite", undefined);
+		}
+		refetchPokemon();
+	}
+	
+	const updateSearch = debounce((value: string) => {
+		search.value = value;
+		refetchPokemon();
+	}, 500);
 
 	const count: ComputedRef<number> = computed((): number => {
 		return result.value?.pokemons.count || 0;
@@ -39,26 +101,11 @@ export function usePokemonQuery() {
 		});
 	};
 
-	//watch filters for changes (both search and filters)
-	const store = useFilterStore();
-	store.$subscribe(() => {
-		const { filters: filtersStore, search: searchStore } = storeToRefs(store);
-		offset.value = 0;
-		filter.value = filtersStore.value;
-		search.value = searchStore.value;
-		refetch(
-			{
-				limit: limit.value,
-				offset: 0,
-				filter: filtersStore.value,
-				search: searchStore.value,
-			}
-		);
-	});
-
 	return {
 		limit,
 		offset,
+		filter,
+		search,
 		pokemons,
 		data: result,
 		query,
@@ -66,7 +113,14 @@ export function usePokemonQuery() {
 		error,
 		loadMore,
 		onResult,
-		count
+		count,
+		refetch,
+		onError,
+		setFilter,
+		setFilters,
+		toggleFavorites,
+		updateSearch,
+		refetchPokemon
 	};
 }
 

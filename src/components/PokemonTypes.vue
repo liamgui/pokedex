@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useViewStore } from "~/stores/useViewStore";
+import { useView } from "~/composables/useView";
 
 type Props = {
 	types: readonly string[];
@@ -11,7 +11,7 @@ withDefaults(defineProps<Props>(), {
 	hover: false,
 });
 
-const { setSelectedPokemonType } = useViewStore();
+const { setSelectedPokemonType } = useView();
 const hovering = ref(false);
 const typeHover = (type: string) => {
 	hovering.value = true;

@@ -4,13 +4,12 @@ import { computed, ref } from "vue";
 //head
 import { useHead } from "@vueuse/head";
 import { usePokemonQuery } from "~/composables/usePokemon";
-import { useFilterStore } from "~/stores/useFilterStore";
 
 import Filters from "~/components/Filters.vue";
 import PokemonList from "~/components/PokemonList.vue";
 import Loader from "~/components/Loader.vue";
-import { useViewStore } from "~/stores/useViewStore";
-import { storeToRefs } from "pinia";
+import { useView } from "~/composables/useView";
+
 //define head
 useHead({
 	title: "Pokedex",
@@ -24,7 +23,7 @@ useHead({
 
 const { pokemons, loading: pokemonsLoading, error: pokemonsError, loadMore, count } = usePokemonQuery();
 
-const { viewType: viewTypeRef } = storeToRefs(useViewStore());
+const { viewType: viewTypeRef } = useView();
 
 const loadingMore = ref(false);
 
@@ -41,10 +40,10 @@ const load = () => {
 };
 
 // pokemon query
-const { filters } = useFilterStore();
+const { filter } = usePokemonQuery();
 
 const filteredPokemons = computed(() => {
-	if (filters.isFavorite) return pokemons.value.filter((pokemon) => pokemon.isFavorite);
+	if (filter.value.isFavorite) return pokemons.value.filter((pokemon) => pokemon.isFavorite);
 	return pokemons.value;
 });
 

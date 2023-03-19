@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
+
 import { onMounted, ref, watch } from "vue";
-import { useFilterStore } from "~/stores/useFilterStore";
+import { useFilters } from "~/composables/useFilters";
+import { usePokemonQuery } from "~/composables/usePokemon";
 // import CloseSVG from "~/assets/svgs/close.svg?component";
 
 
 const searchText = ref("");
-const { updateSearch } = useFilterStore();
-const { search } = storeToRefs(useFilterStore());
+const { search, updateSearch } = usePokemonQuery();
 
 watch(
 	search,
@@ -20,6 +20,10 @@ onMounted(() => {
 	searchText.value = search.value;
 });
 
+function sendUpdatedSearch() {
+	updateSearch(searchText.value);
+}
+
 </script>
 <template>
 	<div class="search-bar">
@@ -30,7 +34,7 @@ onMounted(() => {
 			size="large"
 			type="text"
 			placeholder="Search"
-			@input="updateSearch(searchText)" />
+			@input="sendUpdatedSearch" />
 		<!-- <CloseSVG></CloseSVG> -->
 	</div>
 </template>

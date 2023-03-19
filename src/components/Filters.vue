@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { onMounted, ref } from "vue";
 import Dropdown from "~/components/Dropdown.vue";
 import SearchBar from "~/components/SearchBar.vue";
-import { usePokemonTypesQuery } from "~/composables/usePokemon";
-import { useFilterStore, Filters } from "~/stores/useFilterStore";
-import { useViewStore } from "~/stores/useViewStore";
+import { usePokemonQuery, usePokemonTypesQuery } from "~/composables/usePokemon";
+import { PokemonFilterInput as Filters } from "~/graphql/types";
+import { useView } from "~/composables/useView";
 import HeartGrayStackSVG from "~/assets/svgs/heart-gray-stacked.svg?component";
 import HeartRedStackSVG from "~/assets/svgs/heart-red-stacked.svg?component";
 import ListSVG from "~/assets/svgs/list.svg?component";
@@ -13,11 +11,8 @@ import GridSVG from "~/assets/svgs/grid.svg?component";
 // pokemon types query
 const { types, loading: pokemonTypesLoading, error: pokemonTypesError } = usePokemonTypesQuery();
 
-const { setFilter, updateSearch, toggleFavoriteView } = useFilterStore();
-const { search, filters } = storeToRefs(useFilterStore());
-const { filters: filtersRef } = storeToRefs(useFilterStore());
-const { setViewType } = useViewStore();
-const { viewType } = storeToRefs(useViewStore());
+const { filter, setFilter, toggleFavorites } = usePokemonQuery();
+const { viewType, setViewType } = useView();
 
 
 function toggleView() {
@@ -39,17 +34,17 @@ function toggleView() {
 					class="types"
 					:options="types"
 					title="Types"
-					:default-value="(filters.type as typeof Filters)"
-					@change="setFilter($event, 'type')"></Dropdown>
+					:default-value="(filter.type as typeof Filters)"
+					@change="setFilter('type', $event as string)"></Dropdown>
 			</div>
 			<div class="favorites-view">
 				<button
 					title="toggle favorites view"
 					class="favorite-view icon-button"
-					:class="{favorites: filtersRef.isFavorite}"
-					@click="toggleFavoriteView()">
-					<HeartGrayStackSVG v-if="!filtersRef.isFavorite"></HeartGrayStackSVG>
-					<HeartRedStackSVG v-if="filtersRef.isFavorite"></HeartRedStackSVG>
+					:class="{favorites: filter.isFavorite}"
+					@click="toggleFavorites">
+					<HeartGrayStackSVG v-if="!filter.isFavorite"></HeartGrayStackSVG>
+					<HeartRedStackSVG v-if="filter.isFavorite"></HeartRedStackSVG>
 				</button>
 				<button :title="'toggle ' + viewType + ' view'" class="view icon-button" @click="toggleView()">
 					<ListSVG v-if="viewType === 'grid'"></ListSVG>

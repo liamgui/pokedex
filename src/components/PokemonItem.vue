@@ -3,8 +3,8 @@ import { computed } from "vue";
 import { Pokemon } from "~/graphql/types";
 import FavoriteButton from "./FavoriteButton.vue";
 import PokemonTypes from "~/components/PokemonTypes.vue";
-import { useViewStore } from "~/stores/useViewStore";
-import { storeToRefs } from "pinia";
+import { useView } from "~/composables/useView";
+
 
 interface Props {
 	pokemon: Pokemon,
@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 	displayFavorite: true,
 });
 
-const { viewType } = storeToRefs(useViewStore());
+const { viewType } = useView();
 
 
 const to = computed(() => {

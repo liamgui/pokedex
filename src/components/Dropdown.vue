@@ -11,12 +11,12 @@ const props = withDefaults(defineProps<{
 });
 
 const value = ref("");
+const changeEmitName = "change";
 
 const handleCommand = (value: string | number) => {
+	console.log("handleCommand", value);
 	emits(changeEmitName, value);
 };
-
-const changeEmitName = "change";
 
 const emits = defineEmits<{
 	(e: typeof changeEmitName, value: string | number): void
@@ -29,22 +29,24 @@ onMounted(() => {
 </script>
 
 <template>
-	<el-select
-		v-model="value"
-		class="dropdown"
-		:placeholder="title"
-		size="large"
-		clearable
-		@change="handleCommand"
-	>
-		<el-option
-			v-for="item in options"
-			:key="item"
-			class="option"
-			:label="item"
-			:value="item.toLowerCase()"
-		/>
-	</el-select>
+	<div>
+		<el-select
+			v-model="value"
+			class="dropdown"
+			:placeholder="title"
+			size="large"
+			clearable
+			@change="handleCommand($event)"
+		>
+			<el-option
+				v-for="item in options"
+				:key="item"
+				class="option"
+				:label="item"
+				:value="item.toLowerCase()"
+			/>
+		</el-select>
+	</div>
 </template>
 
 <style scoped>

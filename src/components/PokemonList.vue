@@ -3,8 +3,8 @@
 //pokemonitem
 import PokemonItem from "~/components/PokemonItem.vue";
 //filters for favorites
-import { storeToRefs } from "pinia";
-import { useViewStore } from "~/stores/useViewStore";
+
+import { useView } from "~/composables/useView";
 import { Pokemon } from "~/graphql/types";
 
 type Props = {
@@ -21,7 +21,7 @@ const props = withDefaults(
 	}
 );
 
-const { viewType } = storeToRefs(useViewStore());
+const { viewType } = useView();
 
 const typesClass = (type: string | readonly string[]) => {
 	if (!props.displayTypes) return "";
@@ -29,7 +29,7 @@ const typesClass = (type: string | readonly string[]) => {
 	return "type-" + type.toLowerCase();
 };
 
-const { selectedPokemonType: selectedPokemonTypeRef } = storeToRefs(useViewStore());
+const { selectedPokemonType: selectedPokemonTypeRef } = useView();
 // function to check if pokemon type is selectedPokemonType
 const isSelectedType = (types: readonly string[], reverse: boolean = false) => {
 	if (!props.displayTypes || !selectedPokemonTypeRef.value) return false;
