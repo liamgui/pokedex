@@ -1,5 +1,5 @@
 import { ref, Ref } from "vue";
-import { PokemonFilterInput } from "~/graphql/types";
+import { PokemonFilterInput as Filters } from "~/graphql/types";
 import { debounce } from "~/utils/debounce";
 
 const filters: Ref<Record<string, string | number | boolean | null>> = ref({});
@@ -7,7 +7,7 @@ const search: Ref<string> = ref("");
 
 export function useFilters() {
 
-	function setFilter(value: string | number | boolean | null, key: keyof PokemonFilterInput) {
+	function setFilter(value: string | number | boolean | null, key: keyof Filters) {
 		filters.value[key] = value;
 	}
 

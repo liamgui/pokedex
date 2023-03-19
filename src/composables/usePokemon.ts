@@ -6,21 +6,21 @@ import { Pokemon } from "~/types";
 import { debounce } from "~/utils/debounce";
 // import { debounce } from "lodash";
 
-import { PokemonFilterInput } from "./../graphql/types.d";
+import { PokemonFilterInput as Filters } from "./../graphql/types.d";
 import { PokemonQueryResult } from "./../types";
 
 
 interface Options {
 	limit?: number;
 	offset?: number;
-	filter?: PokemonFilterInput;
+	filter?: Filters;
 	search?: string;
 }
 
 
 const limit: Ref<number> = ref(20);
 const offset: Ref<number> = ref(0);
-const filter: Ref<PokemonFilterInput> = ref({});
+const filter: Ref<Filters> = ref({});
 const search: Ref<string> = ref("");
 
 const pokemons: Ref<Pokemon[]> = ref([]);
@@ -44,7 +44,7 @@ export function usePokemonQuery({ limit: limitParam = 20, offset: offsetParam = 
 		pokemons.value = result.data.pokemons.edges || [];
 	});
 
-	function setFilters(filters: PokemonFilterInput) {
+	function setFilters(filters: Filters) {
 		filter.value = filters;
 		refetchPokemon();
 	}
@@ -60,7 +60,7 @@ export function usePokemonQuery({ limit: limitParam = 20, offset: offsetParam = 
 		});
 	}
 		
-	function setFilter<K extends keyof PokemonFilterInput>(key: K, value: PokemonFilterInput[K]) {
+	function setFilter<K extends keyof Filters>(key: K, value: Filters[K]) {
 		if ( !value ) {
 			delete filter.value[key];
 		} else {
