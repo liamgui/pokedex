@@ -24,7 +24,7 @@ const cache = new InMemoryCache({
 				pokemons: {
 					// Don't cache separate results based on
 					// any of this field's arguments.
-					keyArgs: false,
+					keyArgs: ["limit", "offset"],
 					
 					merge(existing = {edges: []}, incoming, options) {
 						//if there are no more incoming edges, return the existing edges
