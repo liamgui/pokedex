@@ -1,7 +1,7 @@
 import { useQuery } from "@vue/apollo-composable";
 import { computed, ComputedRef, Ref, ref } from "vue";
 import { storeToRefs } from "pinia";
-import { pokemonNameQuery, pokemonsQuery, pokemonTypesQuery } from "~/graphql/queries/queries";
+import { pokemonByName as pokemonNameQuery, pokemons as pokemonsQuery, pokemonTypes as pokemonTypesQuery } from "~/graphql/queries/queries";
 import { Pokemon, PokemonFilterInput } from "~/graphql/types";
 import { useFilterStore } from "~/stores/useFilterStore";
 

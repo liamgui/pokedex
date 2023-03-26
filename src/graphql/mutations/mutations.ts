@@ -10,7 +10,7 @@ export const favoritePokemon = gql`
 	}
 `;
 
-export const unfavoritePokemon = gql`
+export const unFavoritePokemon = gql`
 	mutation unFavoritePokemon($id: ID!) {
 		unFavoritePokemon(id: $id) {
 			id
