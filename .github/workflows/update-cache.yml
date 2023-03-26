@@ -12,6 +12,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Get .nvmrc
+      run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+      id: nvm
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ steps.nvm.outputs.NVMRC }}
+
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v3
