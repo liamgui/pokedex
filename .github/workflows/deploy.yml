@@ -11,7 +11,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       # get output of nvmrc
-    - run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+
+    - name: Get .nvmrc
+      run: echo ::set-output name=NVMRC::$(cat .nvmrc)
       id: nvm
     - name: Setup Node.js
       uses: actions/setup-node@v3

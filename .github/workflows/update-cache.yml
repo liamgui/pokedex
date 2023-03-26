@@ -35,5 +35,5 @@ jobs:
 
     - name: Install Packages
       # No need to install if hit, we are not building
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.cache-npm.outputs.cache-hit != 'true'
       run: npm ci
