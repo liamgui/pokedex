@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const pokemonsQuery = gql`
+export const pokemons = gql`
 	query pokemons($limit: Int!, $offset: Int, $search: String, $filter: PokemonFilterInput) {
 		pokemons(query: { limit: $limit, offset: $offset, search: $search, filter: $filter }) {
 			limit
@@ -18,13 +18,13 @@ export const pokemonsQuery = gql`
 	}
 `;
 
-export const pokemonTypesQuery = gql`
+export const pokemonTypes = gql`
 	query pokemonTypes {
 		pokemonTypes
 	}
 `;
 
-export const pokemonNameQuery = gql`
+export const pokemonByName = gql`
 	query pokemonByName($name: String!) {
 		pokemonByName(name: $name) {
 			id

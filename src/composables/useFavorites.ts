@@ -1,5 +1,5 @@
 import { useMutation } from "@vue/apollo-composable";
-import { favoritePokemon as favoriteMutation, unfavoritePokemon as unfavoriteMutation } from "~/graphql/mutations/mutations";
+import { favoritePokemon as favoriteMutation, unFavoritePokemon as unFavoriteMutation } from "~/graphql/mutations/mutations";
 import { ref } from "vue";
 import { Pokemon } from "~/graphql/types";
 
@@ -14,8 +14,8 @@ export function useFavorites() {
 			},
 		})
 	);
-	const { mutate: unfavoritePokemon } = useMutation(
-		unfavoriteMutation,
+	const { mutate: unFavoritePokemon } = useMutation(
+		unFavoriteMutation,
 		() => ({
 			variables: {
 				id: pokemonToFavorite.value,
@@ -26,7 +26,7 @@ export function useFavorites() {
 	const toggleFavorite = (pokemon: Pokemon) => {
 		pokemonToFavorite.value = pokemon.id;
 		if (pokemon.isFavorite) {	
-			unfavoritePokemon();
+			unFavoritePokemon();
 		} else {
 			favoritePokemon();
 		}
@@ -34,7 +34,7 @@ export function useFavorites() {
 	
 	return {
 		addFavorite: favoritePokemon,
-		removeFavorite: unfavoritePokemon,
+		removeFavorite: unFavoritePokemon,
 		pokemonToFavorite,
 		toggleFavorite
 	};
