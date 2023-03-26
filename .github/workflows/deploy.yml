@@ -11,23 +11,21 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Create hash
+      run: tail -n +4 package-lock.json > .content.to.hash
+
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v3
       env:
         cache-name: cache-node-modules
       with:
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        key: node-${{ hashFiles('**/package-lock.json') }}
         path: ~/.npm
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
-
-    - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-      name: List the state of node modules
-      continue-on-error: true
-      run: npm list
 
     - name: Install and Build
       run: |
