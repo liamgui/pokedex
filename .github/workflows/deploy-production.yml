@@ -1,0 +1,66 @@
+name: Deploy To Production
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      # get output of nvmrc
+
+    # echo the ENV_FILE secret to a .env file
+    - name: Create .env file
+    - if: ${{ secrets.ENV_FILE }}
+      run: echo "${{ secrets.ENV_FILE }}" > .env
+
+    - name: rysnc .env to staging
+    - if: ${{ secrets.ENV_FILE }}
+      uses: Burnett01/rsync-deployments@5.2.1
+      with:
+        switches: -rtOvz --delete
+        path: .env
+        remote_path: ${{ secrets.DEPLOY_PATH }}
+        remote_host: ${{ secrets.DEPLOY_HOST }}
+        remote_user: ${{ secrets.DEPLOY_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}
+
+    - name: Get .nvmrc
+      run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+      id: nvm
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ steps.nvm.outputs.NVMRC || 'lts/gallium' }}
+
+    - name: Cache node modules
+      id: cache-npm
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        path: ~/.npm
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Install and Build
+      run: |
+        npm ci
+        npm run build
+
+    - name: Deploy
+      uses: Burnett01/rsync-deployments@5.2.1
+      with:
+        switches: -avz --delete
+        path: dist/
+        remote_path: ${{ secrets.DEPLOY_PATH }}
+        remote_host: ${{ secrets.DEPLOY_HOST }}
+        remote_user: ${{ secrets.DEPLOY_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}

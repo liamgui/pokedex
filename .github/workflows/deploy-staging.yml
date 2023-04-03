@@ -1,8 +1,9 @@
-name: Deploy to pokedex.digitaldungeon.dev
+name: Deploy to Staging
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - staging
 
 jobs:
   build:
@@ -10,8 +11,24 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-      # get output of nvmrc
 
+    # echo the ENV_FILE secret to a .env file
+    - name: Create .env file
+      if: ${{ secrets.STAGING_ENV_FILE }}
+      run: echo "${{ secrets.STAGING_ENV_FILE }}" > .env
+
+    - name: rysnc .env to staging
+      if: ${{ secrets.STAGING_ENV_FILE }}
+      uses: Burnett01/rsync-deployments@5.2.1
+      with:
+        switches: -rtOvz --delete
+        path: .env
+        remote_path: ${{ secrets.STAGING_DEPLOY_PATH }}
+        remote_host: ${{ secrets.DEPLOY_HOST }}
+        remote_user: ${{ secrets.DEPLOY_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}
+        
+    # get output of nvmrc
     - name: Get .nvmrc
       run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
       id: nvm
@@ -19,7 +36,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ steps.nvm.outputs.NVMRC }}
+        node-version: ${{ steps.nvm.outputs.NVMRC || 'lts/gallium' }}
 
     - name: Cache node modules
       id: cache-npm
@@ -39,12 +56,12 @@ jobs:
         npm ci
         npm run build
 
-    - name: Deploy
+    - name: Deploy Build
       uses: Burnett01/rsync-deployments@5.2.1
       with:
-        switches: -avz --delete
+        switches: -rtOvz --delete
         path: dist/
-        remote_path: ${{ secrets.DEPLOY_PATH }}
+        remote_path: ${{ secrets.DEPLOY_STAGING_PATH }}/
         remote_host: ${{ secrets.DEPLOY_HOST }}
         remote_user: ${{ secrets.DEPLOY_USER }}
         remote_key: ${{ secrets.DEPLOY_KEY }}
