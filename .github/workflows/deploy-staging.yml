@@ -17,7 +17,7 @@ jobs:
       env: 
         env_file: ${{ secrets.STAGING_ENV_FILE }}
       if: ${{ env.env_file == '' }}
-      run: echo "${{ secrets.STAGING_ENV_FILE }}" > .env
+      run: echo "${{ secrets.STAGING_ENV_FILE }}" > .env.local
 
     - name: rysnc .env to staging
       env: 
@@ -26,7 +26,7 @@ jobs:
       uses: Burnett01/rsync-deployments@5.2.1
       with:
         switches: -rtOvz --delete
-        path: .env
+        path: .env, .env.local
         remote_path: ${{ secrets.STAGING_DEPLOY_PATH }}
         remote_host: ${{ secrets.DEPLOY_HOST }}
         remote_user: ${{ secrets.DEPLOY_USER }}
