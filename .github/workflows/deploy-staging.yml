@@ -14,15 +14,19 @@ jobs:
 
     # echo the ENV_FILE secret to a .env file
     - name: Create .env file
-      env: 
-        env_file: ${{ secrets.STAGING_ENV_FILE }}
-      if: ${{ env.env_file == '' }}
-      run: echo "${{ secrets.STAGING_ENV_FILE }}" > .env.local
+      run: echo "${{ secrets.STAGING_ENV_FILE || '' }}" > .env.local
+
+    - name: Check file existence
+      id: check_files
+      uses: andstor/file-existence-action@v2
+      with:
+        files: ".env"
+
+    - name: create .env if missing
+      if: steps.check_files.outputs.files_exists == 'false'
+      run: echo "" > .env
 
     - name: rysnc .env to staging
-      env: 
-        env_file: ${{ secrets.STAGING_ENV_FILE }}
-      if: ${{ env.env_file == '' }}
       uses: Burnett01/rsync-deployments@5.2.1
       with:
         switches: -rtOvz --delete
