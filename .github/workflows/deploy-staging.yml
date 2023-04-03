@@ -14,11 +14,15 @@ jobs:
 
     # echo the ENV_FILE secret to a .env file
     - name: Create .env file
-      if: secrets.STAGING_ENV_FILE
+      env: 
+        env_file: ${{ secrets.STAGING_ENV_FILE }}
+      if: ${{ env.env_file == '' }}
       run: echo "${{ secrets.STAGING_ENV_FILE }}" > .env
 
     - name: rysnc .env to staging
-      if: secrets.STAGING_ENV_FILE
+      env: 
+        env_file: ${{ secrets.STAGING_ENV_FILE }}
+      if: ${{ env.env_file == '' }}
       uses: Burnett01/rsync-deployments@5.2.1
       with:
         switches: -rtOvz --delete
