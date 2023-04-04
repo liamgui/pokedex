@@ -14,7 +14,9 @@ jobs:
 
     # echo the ENV_FILE secret to a .env file
     - name: Create .env file
-      run: echo "${{ secrets.STAGING_ENV_FILE || '' }}" > .env.local
+      run: |
+        echo "${{ secrets.STAGING_ENV_FILE || '' }}" > .env.local
+        cat .env.local
 
     - name: Check file existence
       id: check_files
@@ -24,7 +26,9 @@ jobs:
 
     - name: create .env if missing
       if: steps.check_files.outputs.files_exists == 'false'
-      run: echo "" > .env
+      run: | 
+        echo "" > .env
+        cat .env
 
     - name: rysnc .env to staging
       uses: Burnett01/rsync-deployments@5.2.1
@@ -69,7 +73,7 @@ jobs:
       with:
         switches: -rtOvz --delete
         path: dist/
-        remote_path: ${{ secrets.DEPLOY_STAGING_PATH }}/
+        remote_path: ${{ secrets.DEPLOY_STAGING_PATH }}
         remote_host: ${{ secrets.DEPLOY_HOST }}
         remote_user: ${{ secrets.DEPLOY_USER }}
         remote_key: ${{ secrets.DEPLOY_KEY }}
